@@ -9,8 +9,22 @@ Tables
 - Patiences table
 - medicine table
 - appointments table
-- history table
 
 Backend
 - Read inputs
 - scrub inputs 
+- get information requested. 
+
+frontend
+- html 
+- making the website look good
+
+# What each group member is doing
+Cooper
+- Doctors & patience table set up
+
+Emily
+- html & front end
+
+Paul
+- backend 
