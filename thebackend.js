@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 
 
-// Displays current port
+// Displays current port and how to access the application
 app.listen(port, function() {
     console.log(`Current Port: ${port}! Access the application at http://localhost:${port}/` );
 });
