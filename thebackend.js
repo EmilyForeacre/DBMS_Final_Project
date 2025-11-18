@@ -3,12 +3,16 @@
 //Submission Date: 
 //Assignment: Final Project, Backend Code
 
+// to view http://localhost:3000/
 const express = require('express');
 const app = express();
 const port = 3000;
+const path = require('path');
+
+
 
 app.get('/', function(req, res) {
-    res.send('Hello World!');
+    res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
 });
 
 app.listen(port, function() {
