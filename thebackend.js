@@ -10,11 +10,15 @@ const port = 3000;
 const path = require('path');
 
 
-
+// Serve static files from the 'htmlfiles' directory
+// specifically serves the login.html file when accessing the root URL
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
 });
 
+
+
+// Displays current port
 app.listen(port, function() {
-    console.log(`Example app listening on port ${port}!`);
+    console.log(`Current Port: ${port}! Access the application at http://localhost:${port}/` );
 });
