@@ -1,0 +1,51 @@
+medicine_name,generic_name,dosage_type,strength,manufacturer,needs_prescription,instructions,side_effects,currently_used
+Tylenol,Acetaminophen,Tablet,500 mg,Johnson and Johnson,0,Take 1 tablet every 6 hours with water,Nausea,1
+Advil,Ibuprofen,Tablet,200 mg,Pfizer,0,Take with food to avoid stomach upset,Stomach pain,1
+Amoxicillin,Amoxicillin,Capsule,500 mg,Teva Pharmaceuticals,1,Take 3 times a day for 10 days,Diarrhea,1
+Zithromax,Azithromycin,Tablet,250 mg,Teva Pharmaceuticals,1,Take 2 tablets on day 1 then 1 daily,Fatigue,1
+Lipitor,Atorvastatin,Tablet,20 mg,Pfizer,1,Take once daily at night,Muscle aches,1
+Metformin,Metformin,Tablet,500 mg,Teva Pharmaceuticals,1,Take with meals to reduce stomach upset,Nausea,1
+Lisinopril,Lisinopril,Tablet,10 mg,Merck,1,Take once daily,Dry cough,1
+Norvasc,Amlodipine,Tablet,5 mg,Pfizer,1,Take once daily,Swelling in legs,1
+Losartan,Losartan,Tablet,25 mg,Teva Pharmaceuticals,1,Take once daily,Dizziness,1
+Prednisone,Prednisone,Tablet,10 mg,Teva Pharmaceuticals,1,Take exactly as prescribed,Insomnia,1
+Omeprazole,Omeprazole,Capsule,20 mg,Prasco,0,Take 30 minutes before a meal,Headache,1
+Prilosec,Omeprazole,Capsule,20 mg,Procter and Gamble,0,Do not crush or chew,Gas,1
+Zyrtec,Cetirizine,Tablet,10 mg,Johnson and Johnson,0,Take once daily,Drowsiness,1
+Claritin,Loratadine,Tablet,10 mg,Bayer,0,Take once daily,Dry mouth,1
+Allegra,Fexofenadine,Tablet,180 mg,Sanofi,0,Take on empty stomach,Dizziness,1
+Nexium,Esomeprazole,Capsule,20 mg,Novartis,1,Take in morning before meals,Constipation,1
+Flonase,Fluticasone,Nasal Spray,50 mcg,GlaxoSmithKline,0,1 spray per nostril daily,Nasal irritation,1
+ProAir,Albuterol,Inhaler,90 mcg,Teva Pharmaceuticals,1,Inhale 2 puffs every 4 hours,Tremors,1
+Advair,Fluticasone and Salmeterol,Inhaler,250/50 mcg,GlaxoSmithKline,1,Use twice daily,Hoarseness,1
+Singulair,Montelukast,Tablet,10 mg,Merck,1,Take in the evening,Headache,1
+Celexa,Citalopram,Tablet,20 mg,Forest Labs,1,Take once daily,Nausea,1
+Zoloft,Sertraline,Tablet,50 mg,Pfizer,1,Take once daily,Fatigue,1
+Prozac,Fluoxetine,Capsule,20 mg,Eli Lilly,1,Take in the morning,Anxiety,1
+Wellbutrin,Bupropion,Tablet,150 mg,GlaxoSmithKline,1,Do not crush or chew,Insomnia,1
+Xanax,Alprazolam,Tablet,0.5 mg,Pharmacia,1,Use only as prescribed,Drowsiness,1
+Ativan,Lorazepam,Tablet,1 mg,Actavis,1,Do not drive after taking,Dizziness,1
+Humalog,Insulin Lispro,Injection,100 units per mL,Eli Lilly,1,Inject before meals,Low blood sugar,1
+Lantus,Insulin Glargine,Injection,100 units per mL,Sanofi,1,Inject once daily at night,Low blood sugar,1
+Ozempic,Semaglutide,Injection,0.5 mg,Novartis,1,Inject weekly,Nausea,1
+Eliquis,Apixaban,Tablet,5 mg,Bristol Myers Squibb,1,Take twice daily,Bleeding,1
+Xarelto,Rivaroxaban,Tablet,20 mg,Bayer,1,Take with evening meal,Bleeding,1
+Plavix,Clopidogrel,Tablet,75 mg,Sanofi,1,Take once daily,Bruising,1
+Aspirin,Aspirin,Tablet,81 mg,Bayer,0,Take once daily,Stomach upset,1
+Benadryl,Diphenhydramine,Tablet,25 mg,Johnson and Johnson,0,May cause drowsiness,Dry mouth,1
+Pepto Bismol,Bismuth Subsalicylate,Chewable,262 mg,Procter and Gamble,0,Chew 2 tablets as needed,Black tongue,1
+Imodium,Loperamide,Tablet,2 mg,Johnson and Johnson,0,Take after each loose stool,Constipation,1
+Colace,Docusate Sodium,Softgel,100 mg,Sanofi,0,Take daily as needed,Diarrhea,1
+Miralax,Polyethylene Glycol,Powder,17 g,Schering Plough,0,Mix in 8 oz water,Bloating,1
+Robitussin,Guaifenesin,Syrup,100 mg/5 mL,Pfizer,0,Take 10 mL every 4 hours,Nausea,1
+Mucinex,Guaifenesin,Tablet,600 mg,Reckitt Benckiser,0,Do not crush,Headache,1
+Tamiflu,Oseltamivir,Capsule,75 mg,Roche,1,Take twice daily for 5 days,Vomiting,1
+Coumadin,Warfarin,Tablet,5 mg,Merck,1,Take exactly as directed,Bleeding,1
+Tramadol,Tramadol,Tablet,50 mg,Johnson and Johnson,1,Take every 6 hours as needed,Dizziness,1
+Hydrocodone,Hydrocodone,Tablet,5 mg,Pfizer,1,Use only as directed,Drowsiness,1
+Oxycodone,Oxycodone,Tablet,5 mg,Purdue Pharma,1,Use only for severe pain,Nausea,1
+Voltaren,Diclofenac,Gel,1 percent,Novartis,1,Apply to affected area,Skin irritation,1
+Meloxicam,Meloxicam,Tablet,7.5 mg,Teva Pharmaceuticals,1,Take once daily,Upset stomach,1
+Crestor,Rosuvastatin,Tablet,10 mg,AstraZeneca,1,Take nightly,Muscle pain,1
+Ferrous Sulfate,Ferrous Sulfate,Tablet,325 mg,Major Pharmaceuticals,0,Take with food,Constipation,1
+Vitamin D,Cholecalciferol,Tablet,1000 IU,Nature Made,0,Take once daily,None,1
