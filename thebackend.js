@@ -9,6 +9,8 @@ const app = express();
 const port = 3000;
 const path = require('path');
 
+// Middleware to parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the 'htmlfiles' directory
 // specifically serves the login.html file when accessing the root URL
@@ -16,7 +18,18 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
 });
 
+// login route to serve dashboard.html upon form submission
+app.post('/login', function(req, res) {
+    var emails = req.body.email;
+    var password = req.body.password;
 
+    //for testing purposes only
+    console.log(`Email: ${emails}, Password: ${password}`);
+    //code to validate user credentials goes here
+
+
+    res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
+});
 
 // Displays current port and how to access the application
 app.listen(port, function() {
