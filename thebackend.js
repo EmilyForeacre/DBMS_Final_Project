@@ -11,18 +11,6 @@ const port = 3000;
 const path = require('path');
 const mysql = require('mysql2/promise');
 
-const dbConfig = {
-    host: "localhost",
-    user: "root",
-    password: "xxxxx", // !! CHANGE THIS TO YOUR ACTUAL PASSWORD !!
-    database: "finalproject", //Change to schema in use, for Paul it is finalproject
-    
-    //Connection Pool settings for good practice
-    waitForConnections: true, 
-    connectionLimit: 10,
-    queueLimit: 0
-}
-
 const pool = require('./mysqlConnection');
 
 //testing for solid connection to database
@@ -41,12 +29,20 @@ app.post('/login', function(req, res) {
     var emails = req.body.email;
     var password = req.body.password;
 
-    //for testing purposes only
-    console.log(`Email: ${emails}, Password: ${password}`);
     //code to validate user credentials goes here
 
+    // password should be license_number
+    const loginquery = 'SELECT * FROM doctors WHERE email = ? AND license_number = ?';
 
     res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
+
+    try {
+        pool.execute(loginquery, [emails, password])
+    } catch (error) {
+        console.error('Error executing login query:', error);
+
+    }
+    
 });
 
 // Displays current port and how to access the application
