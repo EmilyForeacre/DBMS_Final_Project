@@ -29,15 +29,33 @@ app.post('/login', function(req, res) {
     var emails = req.body.email;
     var password = req.body.password;
 
-    //code to validate user credentials goes here
-
     // password should be license_number
     const loginquery = 'SELECT * FROM doctors WHERE email = ? AND license_number = ?';
 
-    res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
+    
 
     try {
-        pool.execute(loginquery, [emails, password])
+        executeLoginQuery();
+
+        //asyncronous function to execute the login query
+        async function executeLoginQuery() {
+            // using the connection pool to execute the login query with provided email and password
+            const results = await pool.execute(loginquery, [emails, password])
+
+
+            // if exactly one result is returned, login is successful
+            // otherwise, login fails
+            if (results[0].length == 1) {
+                console.log("Login successful for email:", emails);
+                res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
+            } else {
+                //reload to the sendfile screen if login fails
+                console.log("Login failed for email:", emails);
+                res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
+            }
+
+        }
+        
     } catch (error) {
         console.error('Error executing login query:', error);
 
