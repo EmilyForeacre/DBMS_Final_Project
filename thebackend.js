@@ -4,10 +4,28 @@
 //Assignment: Final Project, Backend Code
 
 // to view http://localhost:3000/
+// establishing constants, requirements from express and mysql2/promise
 const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
+const mysql = require('mysql2/promise');
+
+const dbConfig = {
+    host: "localhost",
+    user: "root",
+    password: "xxxxx", // !! CHANGE THIS TO YOUR ACTUAL PASSWORD !!
+    database: "finalproject", //Change to schema in use, for Paul it is finalproject
+    
+    //Connection Pool settings for good practice
+    waitForConnections: true, 
+    connectionLimit: 10,
+    queueLimit: 0
+}
+
+const pool = require('./mysqlConnection');
+
+//testing for solid connection to database
 
 // Middleware to parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
