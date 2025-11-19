@@ -21,7 +21,7 @@ frontend
 
 # What each group member is doing
 Cooper
-- Doctors & patience table set up
+- Completing tables
 
 Emily
 - html & front end
