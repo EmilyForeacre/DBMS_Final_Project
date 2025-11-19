@@ -1,4 +1,4 @@
-use doctors_portal;
+use finalproject;
 /* ************************************************************
    Table: patients
    Description:
