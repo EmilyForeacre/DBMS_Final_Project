@@ -52,6 +52,10 @@ app.post('/login', function(req, res) {
                 //reload to the sendfile screen if login fails
                 console.log("Login failed for email:", emails);
                 res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
+                
+                //reset the values of emails and password
+                emails = '';
+                password = '';
             }
 
         }
