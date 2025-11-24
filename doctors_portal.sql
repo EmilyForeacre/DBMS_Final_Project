@@ -61,7 +61,11 @@ create table medicines (
     
     constraint PK_medicines primary key (medicine_id) -- Primary Key
 );
-
+/* ************************************************************
+   Table: appointments
+   Description:
+   Stores information on appointments for our database
+   ************************************************************ */
 create table appointments (
     appointment_id int auto_increment,
     patient_id int not null,
