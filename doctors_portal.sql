@@ -61,6 +61,36 @@ create table medicines (
     
     constraint PK_medicines primary key (medicine_id) -- Primary Key
 );
+/* ************************************************************
+   Table: appointments
+   Description:
+   Stores information on appointments for our database
+   ************************************************************ */
+create table appointments (
+    appointment_id int auto_increment,
+    patient_id int not null,
+    doctor_id int not null,
+    -- Date and time of the appointment
+    appointment_date date not null,
+    appointment_time time not null,
+    reason_for_visit varchar(200),
+    -- Appointment status to track if it is upcoming, completed, or canceled
+    status enum('Scheduled', 'Completed', 'Canceled', 'No-Show') default 'Scheduled',
+    -- Only avaliable if the appointment has been completed
+    medicine_id int default null,
+    notes varchar(500),
+    
+    -- Primary key 
+    constraint PK_appointments primary key (appointment_id),
+    
+    -- Foreign keys
+    constraint FK_appointments_patients foreign key (patient_id)
+        references patients(patient_id),
+    constraint FK_appointments_doctors foreign key (doctor_id)
+        references doctors(doctor_id),
+    constraint FK_appointments_medicines foreign key (medicine_id)
+        references medicines(medicine_id)
+);
 
 
 
