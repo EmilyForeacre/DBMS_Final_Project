@@ -5,4 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointments</title>
 </head>
+<body>
+    <h1>Appointment Management</h1>
+
+    <!-- add an appointment-->
+    <h2>Add Appointment</h2>
+    <form action="/add_appointment" method = "post">
+        <label for="patient_name">Patient NAme:</label><br>
+        <input type="text" id="patient_name" name="patient_name" required><br><br>
+
+        <label for="date_time">Date and Time:</label><br>
+        <input type="datetime-local" id="date_time" name="date_time" required><br><br>
+
+        <label for="reason">Reason:</label><br>
+        <input type="text" id="reason" name="reason" required><br><br>
+
+        <button type="submit">Add Appointment</button>
+    </form>
+
+    <!-- to delete the appointment-->
+    <h2>Delete Appointment</h2>
+    <form action="/delete_appointment" method="post">
+        <label for="appointment_id">Enter Appointment ID to Delete</label>
+        <input type="number" id="appointment_id" name="appointment_id" required><br><br>
+
+        <button type="submit">Delete Appointment</button>
+    </form>
+
+    <!-- this is the layout of the appointments table-->>
+    <h2>All Appointments</h2>
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Reason</th>
+
+            </tr>
+        </thead>
+        <tbody id="appointmentTable"></tbody>
+    </table>
+
+    <!-- This will hopefully fetch the appointments table-->
+    <script>
+        fetch('/appointments')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById("appointmentTable");
+
+                data.forEach(a => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = a.appointment_id;
+                    row.insertCell(1).innerText = a.patient_name;
+                    row.insertCell(2).innerText = a.date_time;
+                    row.insertCell(3).innerText = a.reason;
+                    
+                });
+            })
+            .catch(err => console.error("Error loading appointments:", err));       
+    </script>
+</body>
 </html>
