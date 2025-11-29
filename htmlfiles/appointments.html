@@ -11,14 +11,21 @@
     <!-- add an appointment-->
     <h2>Add Appointment</h2>
     <form action="/add_appointment" method = "post">
-        <label for="patient_name">Patient NAme:</label><br>
-        <input type="text" id="patient_name" name="patient_name" required><br><br>
+        
+        <label for="patient_id">Patient ID:</label><br>
+        <input type="number" id="patient_id" name="patient_id" required><br><br>
 
-        <label for="date_time">Date and Time:</label><br>
-        <input type="datetime-local" id="date_time" name="date_time" required><br><br>
+        <label for="doctor_id">Doctor ID:</label><br>
+        <input type="number" id="doctor_id" name="doctor_id" required><br><br>
 
-        <label for="reason">Reason:</label><br>
-        <input type="text" id="reason" name="reason" required><br><br>
+        <label for="appointment_date">Appointment Date:</label><br>
+        <input type="date" id="appointment_date" name="appointment_date" required><br><br>
+
+        <label for="appointment_time">Appointment Time:</label><br>
+        <input type="time" id="appointment_time" name="appointment_time" required><br><br>
+
+        <label for="reason_for_visit">Reason for Visit:</label><br>
+        <input type="text" id="reason_for_visit" name="reason_for_visit"><br><br>
 
         <button type="submit">Add Appointment</button>
     </form>
@@ -37,10 +44,13 @@
     <table border="1" cellpadding="6">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Patient</th>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Doctor ID</th>
                 <th>Date</th>
+                <th>Time</th>
                 <th>Reason</th>
+                <th>Status</th>
 
             </tr>
         </thead>
@@ -56,11 +66,13 @@
 
                 data.forEach(a => {
                     const row = table.insertRow();
-                    row.insertCell(0).innerText = a.appointment_id;
-                    row.insertCell(1).innerText = a.patient_name;
-                    row.insertCell(2).innerText = a.date_time;
-                    row.insertCell(3).innerText = a.reason;
-                    
+                    row.insertCell(0).innerText = a.patient_id;
+                    row.insertCell(1).innerText = a.patient_name || "Unknown";
+                    row.insertCell(2).innerText = a.doctor_id;
+                    row.insertCell(3).innerText = a.appointment_date;
+                    row.insertCell(4).innerText = a.appointment_time;
+                    row.insertCell(5).innerText = a.reason_for_visit;
+                    row.insertCell(6).innerText = a.status;
                 });
             })
             .catch(err => console.error("Error loading appointments:", err));       
