@@ -10,18 +10,52 @@ const app = express();
 const port = 3000;
 const path = require('path');
 const mysql = require('mysql2/promise');
+const fsp = require('fs').promises;
 
 const pool = require('./mysqlConnection');
+const { read } = require('fs');
 
 //testing for solid connection to database
 
 // Middleware to parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+async function readAndServe(path, res) {
+    try {
+        const data = await fsp.readFile(path);
+        res.setHeader('Content-Type', 'text/html');
+        res.end(data);
+    } catch (err) {
+        console.error("File Read Error:", err);
+        res.status(404).send("<html><body><h1>404 Not Found</h1><p>The file " + path + " could not be served.</p></body></html>");
+    }
+}
 
 // Serve static files from the 'htmlfiles' directory
 // specifically serves the login.html file when accessing the root URL
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
+    readAndServe("./htmlfiles/login.html", res);
+});
+
+app.get('/logout', function(req, res) {
+    readAndServe("./htmlfiles/login.html", res)
+});
+
+app.get('/patient', function(req, res) {
+    readAndServe("./htmlfiles/patient.html", res)
+});
+
+app.get('/appointment', function(req, res) {
+    readAndServe("./htmlfiles/appointments.html", res)
+});
+
+app.get('/doctor', function(req, res) {
+    readAndServe("./htmlfiles/doctors.html", res)
+});
+
+app.get('/medicine', function(req, res) {
+    readAndServe("./htmlfiles/medicine.html", res)
 });
 
 // login route to serve dashboard.html upon form submission
@@ -66,6 +100,8 @@ app.post('/login', function(req, res) {
     }
     
 });
+
+
 
 // Displays current port and how to access the application
 app.listen(port, function() {

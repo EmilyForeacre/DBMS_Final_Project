@@ -12,18 +12,13 @@
     <body>
         <h1>Welcome to the Doctor's Portal Dashboard</h1>
         <p>You are now logged in as a Doctor.</p>
-        <button onclick="logout()">Logout</button>
-        <script>
-            function logout() {
-                // Redirect to login page on logout
-                window.location.href = "login.html";
-            }
-        </script>
+        <form action="/logout" method="get"><button type="submit">Logout</button></form>
+
         <ul>
-            <li><a href="patients.html">View Patients</a></li>
-            <li><a href="appointments.html">Manage Appointments</a></li>
-            <li><a href="doctors.html">Doctors table</a></li>
-            <li><a href="medicine.html">medicine records</a></li>
+            <li><a href="http://localhost:3000/patient">View Patients</a></li>
+            <li><a href="http://localhost:3000/appointment">Manage Appointments</a></li>
+            <li><a href="http://localhost:3000/doctor">Doctors table</a></li>
+            <li><a href="http://localhost:3000/medicine">medicine records</a></li>
         </ul>
     </body>
 </html>
