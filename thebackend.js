@@ -71,7 +71,7 @@ app.get('/search', function(req, res) {
 //gets for fetching data from the database and returning it as json
 app.get('/appointments', async(req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM appointments');
+        const [rows] = await pool.query('SELECT * FROM appointments JOIN patients ON appointments.patient_id = patients.patient_id JOIN doctors ON appointments.doctor_id = doctors.doctor_id');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching appointments:', error);
