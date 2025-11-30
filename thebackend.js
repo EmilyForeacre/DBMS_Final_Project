@@ -174,6 +174,38 @@ app.post('/delete_medicine', async(req, res) => {
 });
 
 
+// all posts for patients
+app.post('/add_patient', async(req, res) => {
+    const { first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient} = req.body;
+    const insertQuery = 'INSERT INTO patients (first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient];
+
+    try {
+        await pool.execute(insertQuery, params);
+        console.log("Patient added successfully:", first_name, last_name);
+        res.redirect('/patient');
+    } catch (error) {
+        console.error('Error adding patient:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/delete_patient', async(req, res) => {
+    const { email } = req.body;
+    const deleteQuery = 'DELETE FROM patients WHERE email = ?';
+    const param = [email];
+
+    try {
+        await pool.execute(deleteQuery, param);
+        console.log("Patient deleted successfully with email:", email);
+        res.redirect('/patient');
+    } catch (error) {
+        console.error('Error deleting patient:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
 // Displays current port and how to access the application
 app.listen(port, function() {
     console.log(`Current Port: ${port}! Access the application at http://localhost:${port}/` );
