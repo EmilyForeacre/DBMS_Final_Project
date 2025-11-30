@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const dbConfig = {
     host: "localhost",
     user: "root",
-    password: "!LimaCharlie2022", // !! CHANGE THIS TO YOUR ACTUAL PASSWORD !!
+    password: "xxxxxxx", // !! CHANGE THIS TO YOUR ACTUAL PASSWORD !!
     database: "finalproject", // !! CHANGE THIS TO YOUR ACTUAL DATABASE NAME !!
     // Connection Pool settings are optional but good practice
     waitForConnections: true, 
