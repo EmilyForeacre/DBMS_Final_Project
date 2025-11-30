@@ -66,6 +66,49 @@ app.get('/dashboard', function(req, res) {
 app.get('/search', function(req, res) {
     readAndServe("./htmlfiles/search.html", res)
 });
+/**************************************************************/
+
+//gets for fetching data from the database and returning it as json
+app.get('/appointments', async(req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM appointments');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/patients', async(req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM patients');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching patients:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/doctors', async(req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM doctors');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching doctors:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/medicines', async(req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM medicines');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching medicines:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+/**************************************************************/
 
 //all the post requests for the various html files
 // login route to serve dashboard.html upon form submission
@@ -110,6 +153,7 @@ app.post('/login', function(req, res) {
     }
     
 });
+/**************************************************************/
 
 // all the posts for appointements.html
 app.post('/add_appointment', async(req, res) => {
@@ -145,6 +189,7 @@ app.post('/delete_appointment', async(req, res) => {
     }
 
 });
+/**************************************************************/
 
 // all posts for medicine.html 
 app.post('/add_medicine', async(req, res) => {
@@ -176,7 +221,7 @@ app.post('/delete_medicine', async(req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
+/**************************************************************/
 
 // all posts for patients
 app.post('/add_patient', async(req, res) => {
@@ -208,6 +253,7 @@ app.post('/delete_patient', async(req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+/**************************************************************/
 
 // post for search.html
 app.post('/search_records', async(req, res) => {
@@ -216,12 +262,11 @@ app.post('/search_records', async(req, res) => {
     const params = [table_name, search_column, search_value];
     
     try {
-
-        
+        // use the pool to query the database regarding specific things
         const [rows] = await pool.query(searchQuery, params);
         console.log(`Search results from table ${table_name} where ${search_column} = ${search_value}:`, rows);
 
-        let htmlResponse = `<html><body><h1>Search Results</h1><table border="1"><tr>`;
+        let htmlResponse = `<html><body><a href="http://localhost:3000/dashboard">Back to Dashboard</a> <a href="http://localhost:3000/search">back to search</a><br><h1>Search Results</h1><table border="1"><tr>`;
         // Table headers
         if (rows.length > 0) {
             for (let column in rows[0]) {
@@ -246,6 +291,8 @@ app.post('/search_records', async(req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 // Displays current port and how to access the application
 app.listen(port, function() {
