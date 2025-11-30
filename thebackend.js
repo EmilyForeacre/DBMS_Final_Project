@@ -1,4 +1,4 @@
-//Paul Anderson, 
+//Paul Anderson, Cooper Simon, Emily Foreacre 
 //Course Title: Data Base Systems Management
 //Submission Date: 
 //Assignment: Final Project, Backend Code
