@@ -253,6 +253,37 @@ app.post('/delete_patient', async(req, res) => {
 });
 /**************************************************************/
 
+app.post('/add_doctor', async(req, res) => {
+    const { first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor} = req.body;
+    const insertQuery = 'INSERT INTO doctors (first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor];
+
+    try {
+        await pool.execute(insertQuery, params);
+        console.log("Doctor added successfully:", first_name, last_name);
+        res.redirect('/doctor');
+    } catch (error) {
+        console.error('Error adding doctor:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/delete_doctor', async(req, res) => {
+    const { doctor_id } = req.body;
+    const deleteQuery = 'DELETE FROM doctors WHERE doctor_id = ?';
+    const param = [doctor_id];
+
+    try {
+        await pool.execute(deleteQuery, param);
+        console.log("Doctor deleted successfully with ID:", doctor_id);
+        res.redirect('/doctor');
+    } catch (error) {
+        console.error('Error deleting doctor:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+/**************************************************************/
+
 // post for search.html
 app.post('/search_records', async(req, res) => {
     const { table_name, search_column, search_value } = req.body;
