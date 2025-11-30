@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Tables</title>
+</head>
+<body>
+    <a href="http://localhost:3000/dashboard">Back to Dashboard</a>
+    <h1>Search Tables</h1>
+
+    <!-- Search Form -->
+    <h2>Search Records</h2>
+    <form action="/search_records" method="post">
+        <label for="table_name">Select Table:</label>
+        <select id="table_name" name="table_name" required>
+            <option value="patients">Patients</option>
+            <option value="appointments">Appointments</option>
+            <option value="doctors">Doctors</option>
+            <option value="medicines">Medicines</option>
+        </select><br><br>
+
+        <label for="search_column">Search Column:</label><br>
+        <input type="text" id="search_column" name="search_column" required><br><br>
+
+        <label for="search_value">Search Value:</label><br>
+        <input type="text" id="search_value" name="search_value" required><br><br>
+
+        <button type="submit">Search</button>
+    </form>
+</html>

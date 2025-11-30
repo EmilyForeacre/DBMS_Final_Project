@@ -63,6 +63,10 @@ app.get('/dashboard', function(req, res) {
     readAndServe("./htmlfiles/dashboard.html", res)
 });
 
+app.get('/search', function(req, res) {
+    readAndServe("./htmlfiles/search.html", res)
+});
+
 //all the post requests for the various html files
 // login route to serve dashboard.html upon form submission
 app.post('/login', function(req, res) {
@@ -205,6 +209,23 @@ app.post('/delete_patient', async(req, res) => {
     }
 });
 
+// post for search.html
+app.post('/search_records', async(req, res) => {
+    const { table_name, search_column, search_value } = req.body;
+    const searchQuery = 'SELECT * FROM ?? WHERE ?? = ?';
+    const params = [table_name, search_column, search_value];
+    
+    try {
+
+        
+        const [rows] = await pool.query(searchQuery, params);
+        console.log(`Search results from table ${table_name} where ${search_column} = ${search_value}:`, rows);
+        res.json(rows); // Send the search results as JSON response
+    } catch (error) {
+        console.error('Error searching tables:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // Displays current port and how to access the application
 app.listen(port, function() {
