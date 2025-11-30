@@ -99,7 +99,7 @@
                 const table = document.getElementById("patientTable");
                 table.innerHTML = "";
 
-                data.forEach(m => {
+                data.forEach(p => {
                     const row = table.insertRow();
                     row.insertCell(0).innerText = p.patient_id;
                     row.insertCell(1).innerText = p.first_name;
