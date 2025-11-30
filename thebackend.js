@@ -220,7 +220,27 @@ app.post('/search_records', async(req, res) => {
         
         const [rows] = await pool.query(searchQuery, params);
         console.log(`Search results from table ${table_name} where ${search_column} = ${search_value}:`, rows);
-        res.json(rows); // Send the search results as JSON response
+
+        let htmlResponse = `<html><body><h1>Search Results</h1><table border="1"><tr>`;
+        // Table headers
+        if (rows.length > 0) {
+            for (let column in rows[0]) {
+                htmlResponse += `<th>${column}</th>`;
+            } 
+            htmlResponse += `</tr>`;
+            // Table rows
+            rows.forEach(row => {
+                htmlResponse += `<tr>`;
+                for (let column in row) {
+                    htmlResponse += `<td>${row[column]}</td>`;
+                }
+                htmlResponse += `</tr>`;
+            });
+            htmlResponse += `</table></body></html>`;
+            res.send(htmlResponse);
+        } else {
+            res.send("<html><body><h1>No records found.</h1></body></html>");
+        }
     } catch (error) {
         console.error('Error searching tables:', error);
         res.status(500).send('Internal Server Error');
