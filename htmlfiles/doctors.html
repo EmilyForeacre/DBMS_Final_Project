@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Management</title>
+</head>
+<body>
+    <a href="http://localhost:3000/dashboard">Back to Dashboard</a>
+    <h1>Doctor Management</h1>
+
+    <!-- Add a Doctor -->
+    <h2>Add Doctor</h2>
+    <form action="/add_doctor" method="post">
+
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+
+        <label for="specialty">Specialty:</label><br>
+        <input type="text" id="specialty" name="specialty" required><br><br>
+
+        <label for="department">Department:</label><br>
+        <input type="text" id="department" name="department"><br><br>
+
+        <label for="license_number">License Number:</label><br>
+        <input type="text" id="license_number" name="license_number" required><br><br>
+
+        <label for="phone_number">Phone Number:</label><br>
+        <input type="text" id="phone_number" name="phone_number"><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br><br>
+
+        <label for="office_number">Office Number:</label><br>
+        <input type="text" id="office_number" name="office_number"><br><br>
+
+        <label for="current_doctor">Currently Employed:</label>
+        <select id="current_doctor" name="current_doctor">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <button type="submit">Add Doctor</button>
+    </form>
+
+    <!-- Delete a Doctor -->
+    <h2>Delete Doctor</h2>
+    <form action="/delete_doctor" method="post">
+        <label for="doctor_id">Enter Doctor ID to Delete:</label><br>
+        <input type="number" id="doctor_id" name="doctor_id" required><br><br>
+
+        <button type="submit">Delete Doctor</button>
+    </form>
+
+    <!-- All Doctors Table -->
+    <h2>All Doctors</h2>
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Specialty</th>
+                <th>Department</th>
+                <th>License #</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Office #</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody id="doctorTable"></tbody>
+    </table>
+
+    <!-- Fetch All Doctors -->
+    <script>
+        fetch('/doctors')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById("doctorTable");
+                table.innerHTML = "";
+
+                data.forEach(d => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = d.doctor_id;
+                    row.insertCell(1).innerText = d.first_name;
+                    row.insertCell(2).innerText = d.last_name;
+                    row.insertCell(3).innerText = d.specialty;
+                    row.insertCell(4).innerText = d.department || "";
+                    row.insertCell(5).innerText = d.license_number || "";
+                    row.insertCell(6).innerText = d.phone_number || "";
+                    row.insertCell(7).innerText = d.email || "";
+                    row.insertCell(8).innerText = d.office_number || "";
+                    row.insertCell(9).innerText = d.current_doctor ? "Yes" : "No";
+                });
+            })
+            .catch(err => console.error("Error loading doctors:", err));
+    </script>
+
+</body>
+</html>
