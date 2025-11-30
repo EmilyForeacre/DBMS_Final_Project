@@ -34,6 +34,7 @@ async function readAndServe(path, res) {
 
 // Serve static files from the 'htmlfiles' directory
 // specifically serves the login.html file when accessing the root URL
+// All the .gets serve their respective html files
 app.get('/', function(req, res) {
     readAndServe("./htmlfiles/login.html", res);
 });
@@ -58,6 +59,7 @@ app.get('/medicine', function(req, res) {
     readAndServe("./htmlfiles/medicine.html", res)
 });
 
+//all the post requests for the various html files
 // login route to serve dashboard.html upon form submission
 app.post('/login', function(req, res) {
     var emails = req.body.email;
@@ -101,7 +103,24 @@ app.post('/login', function(req, res) {
     
 });
 
+app.post('/add_appointment', async(req, res) => {
+    const { patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit } = req.body;
+    const insertQuery = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason_for_visit, status) VALUES (?, ?, ?, ?, ?, "Scheduled")';
+    const params = [patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit];
 
+    console.log (patient_id, doctor_id, appointment_date,appointment_time, reason_for_visit);
+
+    try {
+        await pool.execute(insertQuery, params);
+
+        console.log("Appointment added successfully for patient ID:", patient_id);
+        res.redirect('/appointment');
+
+    } catch (error) {
+        console.error('Error adding appointment:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // Displays current port and how to access the application
 app.listen(port, function() {
