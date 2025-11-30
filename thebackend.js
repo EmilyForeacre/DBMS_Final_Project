@@ -138,6 +138,37 @@ app.post('/delete_appointment', async(req, res) => {
 
 });
 
+// all posts for medicine.html 
+app.post('/add_medicine', async(req, res) => {
+    const { medicine_name, generic_name,manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used} = req.body;
+    const insertQuery = 'INSERT INTO medicines (medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used];
+
+    try {
+        await pool.execute(insertQuery, params);
+        console.log("Medicine added successfully:", medicine_name);
+        res.redirect('/medicine');
+    } catch (error) {
+        console.error('Error adding medicine:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/delete_medicine', async(req, res) => {
+    const { medicine_name } = req.body;
+    const deleteQuery = 'DELETE FROM medicines WHERE medicine_name = ?';
+    const param = [medicine_name];
+
+    try {
+        await pool.execute(deleteQuery, param);
+        console.log("Medicine deleted successfully with name:", medicine_name);
+        res.redirect('/medicine');
+    } catch (error) {
+        console.error('Error deleting medicine:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 // Displays current port and how to access the application
 app.listen(port, function() {
