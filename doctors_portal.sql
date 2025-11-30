@@ -5,7 +5,7 @@ use finalproject;
    Stores information on patients for our database
    ************************************************************ */
 create table patients (
-    patient_id int auto_increment, -- Unique Patient ID for each patient. (auto_increment is a built in SQL function)
+    patient_id int, -- Unique Patient ID for each patient. (auto_increment is a built in SQL function)
     first_name varchar(50) not null,
     last_name varchar(50) not null,
     date_of_birth date not null, -- date of birth in YYYY-MM-DD format
@@ -27,7 +27,7 @@ create table patients (
    Stores information on doctors for our database
    ************************************************************ */
 create table doctors (
-	doctor_id int auto_increment, -- Unique doctor ID for doctors
+	doctor_id int, -- Unique doctor ID for doctors
     first_name varchar(50) not null,
     last_name varchar(50) not null,
     specialty varchar(75) not null, -- Should I create a ENUM for this?
@@ -47,7 +47,7 @@ create table doctors (
    Stores information on medicines for our database
    ************************************************************ */
 create table medicines (
-	medicine_id int auto_increment, -- Unique medicine ID for medicines
+	medicine_id int, -- Unique medicine ID for medicines
     medicine_name varchar(50) not null, -- Exact name for medicine, ex  Tylenol or Advil
     generic_name varchar(50), -- Generic name, ex Acetaminophen or Ibuprofen
     dosage_type varchar(50) not null, -- Should I make this an ENUM?
@@ -67,7 +67,7 @@ create table medicines (
    Stores information on appointments for our database
    ************************************************************ */
 create table appointments (
-    appointment_id int auto_increment,
+    appointment_id int,
     patient_id int not null,
     doctor_id int not null,
     -- Date and time of the appointment
