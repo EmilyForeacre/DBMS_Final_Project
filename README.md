@@ -1,7 +1,7 @@
 # DBMS_Final_Project
 
 ## What is this project?
-This project aims to emulate what a doctors office portal.
+This project aims to emulate what a doctors office portal. A doctor would theoretically use a portal similar to this to edit appointments, manage patients, and manage medicines.
 
 ## Running this project
 There are a couple of mandatory steps to get this project running. 
@@ -29,30 +29,15 @@ node thebackend.js
 
 The code will return the web address used for ease of access when the program is initially started up 
 
-# What we need to do
-Making a doctor's office website. This is the doctors portal.
-
-Tables
-- Doctors table 
-- Patiences table
-- medicine table
-- appointments table
-
-Backend
-- Read inputs
-- scrub inputs 
-- get information requested. 
-
-frontend
-- html 
-- making the website look good
-
-# What each group member is doing
+## What each group member is doing
 Cooper
-- Completing tables
+- tables
+- html
 
 Emily
-- html & front end
+- html
+- styling
 
 Paul
 - backend 
+- readme
