@@ -10,8 +10,16 @@ First, import all of the .csv files into the appropriate mySQL schema.
 
 Second, edit the following code in mysqlConnection.js to the appropriate password and schema
 ```javascript
+const dbConfig = {
+    host: "localhost",
+    user: "root",
     password: "xxxxxxxxx", // !! CHANGE THIS TO YOUR ACTUAL PASSWORD !!
     database: "finalproject", // !! CHANGE THIS TO YOUR ACTUAL DATABASE NAME !!
+    // Connection Pool settings are optional but good practice
+    waitForConnections: true, 
+    connectionLimit: 10,
+    queueLimit: 0
+};
 ```
 
 Third, get the project started simply run the following command in a command prompt open to the project location 
