@@ -177,8 +177,6 @@ app.post('/delete_appointment', async(req, res) => {
     const deleteQuery = 'DELETE FROM appointments WHERE patient_id = ? AND appointment_date = ?';
     const param = [patient_id, appointment_date];    
 
-    console.log("Received delete request for patient ID:", patient_id, " on date:", appointment_date);
-
     try {
         await pool.execute(deleteQuery, param);
         console.log("Appointment deleted successfully for patient ID:", patient_id, " on date:", appointment_date);
@@ -208,13 +206,13 @@ app.post('/add_medicine', async(req, res) => {
 });
 
 app.post('/delete_medicine', async(req, res) => {
-    const { medicine_name } = req.body;
-    const deleteQuery = 'DELETE FROM medicines WHERE medicine_name = ?';
-    const param = [medicine_name];
+    const { medicine_id } = req.body;
+    const deleteQuery = 'DELETE FROM medicines WHERE medicine_id = ?';
+    const param = [medicine_id];
 
     try {
         await pool.execute(deleteQuery, param);
-        console.log("Medicine deleted successfully with name:", medicine_name);
+        console.log("Medicine deleted successfully with ID:", medicine_id);
         res.redirect('/medicine');
     } catch (error) {
         console.error('Error deleting medicine:', error);
@@ -240,13 +238,13 @@ app.post('/add_patient', async(req, res) => {
 });
 
 app.post('/delete_patient', async(req, res) => {
-    const { email } = req.body;
-    const deleteQuery = 'DELETE FROM patients WHERE email = ?';
-    const param = [email];
+    const { patient_id } = req.body;
+    const deleteQuery = 'DELETE FROM patients WHERE patient_id = ?';
+    const param = [patient_id];
 
     try {
         await pool.execute(deleteQuery, param);
-        console.log("Patient deleted successfully with email:", email);
+        console.log("Patient deleted successfully with ID:", patient_id);
         res.redirect('/patient');
     } catch (error) {
         console.error('Error deleting patient:', error);
