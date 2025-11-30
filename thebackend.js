@@ -59,6 +59,10 @@ app.get('/medicine', function(req, res) {
     readAndServe("./htmlfiles/medicine.html", res)
 });
 
+app.get('/dashboard', function(req, res) {
+    readAndServe("./htmlfiles/dashboard.html", res)
+});
+
 //all the post requests for the various html files
 // login route to serve dashboard.html upon form submission
 app.post('/login', function(req, res) {
