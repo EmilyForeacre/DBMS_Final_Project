@@ -103,13 +103,11 @@ app.post('/login', function(req, res) {
     
 });
 
+// all the posts for appointements.html
 app.post('/add_appointment', async(req, res) => {
     const { patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit } = req.body;
     const insertQuery = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason_for_visit, status) VALUES (?, ?, ?, ?, ?, "Scheduled")';
     const params = [patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit];
-
-    console.log (patient_id, doctor_id, appointment_date,appointment_time, reason_for_visit);
-
     try {
         await pool.execute(insertQuery, params);
 
@@ -121,6 +119,25 @@ app.post('/add_appointment', async(req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.post('/delete_appointment', async(req, res) => {
+    const {patient_id, appointment_date} = req.body;
+    const deleteQuery = 'DELETE FROM appointments WHERE patient_id = ? AND appointment_date = ?';
+    const param = [patient_id, appointment_date];    
+
+    console.log("Received delete request for patient ID:", patient_id, " on date:", appointment_date);
+
+    try {
+        await pool.execute(deleteQuery, param);
+        console.log("Appointment deleted successfully for patient ID:", patient_id, " on date:", appointment_date);
+        res.redirect('/appointment');
+    } catch (error) {   
+        console.error('Error deleting appointment:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+});
+
 
 // Displays current port and how to access the application
 app.listen(port, function() {
