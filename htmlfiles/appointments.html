@@ -41,11 +41,30 @@
         <button type="submit">Delete Appointment</button>
     </form>
 
+    <h2>Update Appointment Status</h2>
+
+    <form action="/update_appointment_status" method="post">
+        <label for="appointment_id">Appointment ID:</label><br>
+        <input type="number" id="appointment_id" name="appointment_id" required><br><br>
+
+        <label for="status">New Status:</label><br>
+        <select id="status" name="status" required>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Completed">Completed</option>
+            <option value="Canceled">Canceled</option>
+            <option value="No-Show">No-Show</option>
+        </select><br><br>
+
+        <button type="submit">Update Status</button>
+    </form>
+
+
     <!-- this is the layout of the appointments table-->>
     <h2>All Appointments</h2>
     <table border="1" cellpadding="6">
         <thead>
             <tr>
+                <th>Appointment ID</th>
                 <th>Patient ID</th>
                 <th>Patient First Name</th>
                 <th>Patient Last Name</th>
@@ -69,14 +88,15 @@
 
                 data.forEach(a => {
                     const row = table.insertRow();
-                    row.insertCell(0).innerText = a.patient_id;
-                    row.insertCell(1).innerText = a.first_name || "Unknown";
-                    row.insertCell(2).innerText = a.last_name || "Unknown";
-                    row.insertCell(3).innerText = a.doctor_id;
-                    row.insertCell(4).innerText = a.appointment_date;
-                    row.insertCell(5).innerText = a.appointment_time;
-                    row.insertCell(6).innerText = a.reason_for_visit;
-                    row.insertCell(7).innerText = a.status;
+                    row.insertCell(0).innerText = a.appointment_id;
+                    row.insertCell(1).innerText = a.patient_id;
+                    row.insertCell(2).innerText = a.first_name || "Unknown";
+                    row.insertCell(3).innerText = a.last_name || "Unknown";
+                    row.insertCell(4).innerText = a.doctor_id;
+                    row.insertCell(5).innerText = a.appointment_date;
+                    row.insertCell(6).innerText = a.appointment_time;
+                    row.insertCell(7).innerText = a.reason_for_visit;
+                    row.insertCell(8).innerText = a.status;
                 });
             })
             .catch(err => console.error("Error loading appointments:", err));       
