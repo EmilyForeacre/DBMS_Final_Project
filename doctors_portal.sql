@@ -93,6 +93,23 @@ create table appointments (
 );
 
 
+-- Allows for auto_increment
+set foreign_key_checks = 0;
+alter table doctors
+modify doctor_id int not null auto_increment;
+
+alter table patients
+modify patient_id int not null auto_increment;
+
+alter table medicines
+modify medicine_id int not null auto_increment;
+
+alter table appointments
+modify appointment_id int not null auto_increment;
+
+set foreign_key_checks = 1;
+
+
 
     
 	

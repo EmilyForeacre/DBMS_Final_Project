@@ -47,7 +47,8 @@
         <thead>
             <tr>
                 <th>Patient ID</th>
-                <th>Patient Name</th>
+                <th>Patient First Name</th>
+                <th>Patient Last Name</th>
                 <th>Doctor ID</th>
                 <th>Date</th>
                 <th>Time</th>
@@ -69,12 +70,13 @@
                 data.forEach(a => {
                     const row = table.insertRow();
                     row.insertCell(0).innerText = a.patient_id;
-                    row.insertCell(1).innerText = a.patient_name || "Unknown";
-                    row.insertCell(2).innerText = a.doctor_id;
-                    row.insertCell(3).innerText = a.appointment_date;
-                    row.insertCell(4).innerText = a.appointment_time;
-                    row.insertCell(5).innerText = a.reason_for_visit;
-                    row.insertCell(6).innerText = a.status;
+                    row.insertCell(1).innerText = a.first_name || "Unknown";
+                    row.insertCell(2).innerText = a.last_name || "Unknown";
+                    row.insertCell(3).innerText = a.doctor_id;
+                    row.insertCell(4).innerText = a.appointment_date;
+                    row.insertCell(5).innerText = a.appointment_time;
+                    row.insertCell(6).innerText = a.reason_for_visit;
+                    row.insertCell(7).innerText = a.status;
                 });
             })
             .catch(err => console.error("Error loading appointments:", err));       

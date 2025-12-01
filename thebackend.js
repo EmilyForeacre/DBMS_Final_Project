@@ -3,8 +3,10 @@
 //Submission Date: 
 //Assignment: Final Project, Backend Code
 
+
 // to view http://localhost:3000/
 // establishing constants, requirements from express and mysql2/promise
+const session = require('express-session');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -13,13 +15,20 @@ const mysql = require('mysql2/promise');
 const fsp = require('fs').promises;
 
 const pool = require('./mysqlConnection');
-const { read } = require('fs');
 
 //testing for solid connection to database
 
 // Middleware to parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({
+    secret: 'finalprojectsecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60000 * 0.5 // Session expires after 30 seconds of inactivity
+    }
+})); 
 
 async function readAndServe(path, res) {
     try {
@@ -36,6 +45,8 @@ async function readAndServe(path, res) {
 // specifically serves the login.html file when accessing the root URL
 // All the .gets serve their respective html files
 app.get('/', function(req, res) {
+    console.log(req.session);
+    console.log(req.sessionID);
     readAndServe("./htmlfiles/login.html", res);
 });
 
@@ -71,7 +82,7 @@ app.get('/search', function(req, res) {
 //gets for fetching data from the database and returning it as json
 app.get('/appointments', async(req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM appointments');
+        const [rows] = await pool.query('SELECT * FROM appointments JOIN patients ON appointments.patient_id = patients.patient_id JOIN doctors ON appointments.doctor_id = doctors.doctor_id');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -134,11 +145,14 @@ app.post('/login', function(req, res) {
             // otherwise, login fails
             if (results[0].length == 1) {
                 console.log("Login successful for email:", emails);
+                
+                //set session variable to indicate user has logged in
+                req.session.loggedIn = true;
+
                 res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
             } else {
-                //reload to the sendfile screen if login fails
-                console.log("Login failed for email:", emails);
-                res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
+                //show error if login fails
+                res.status(401).send({msg: 'Login failed: Invalid email or password.'});
                 
                 //reset the values of emails and password
                 emails = '';
@@ -177,8 +191,6 @@ app.post('/delete_appointment', async(req, res) => {
     const deleteQuery = 'DELETE FROM appointments WHERE patient_id = ? AND appointment_date = ?';
     const param = [patient_id, appointment_date];    
 
-    console.log("Received delete request for patient ID:", patient_id, " on date:", appointment_date);
-
     try {
         await pool.execute(deleteQuery, param);
         console.log("Appointment deleted successfully for patient ID:", patient_id, " on date:", appointment_date);
@@ -208,13 +220,13 @@ app.post('/add_medicine', async(req, res) => {
 });
 
 app.post('/delete_medicine', async(req, res) => {
-    const { medicine_name } = req.body;
-    const deleteQuery = 'DELETE FROM medicines WHERE medicine_name = ?';
-    const param = [medicine_name];
+    const { medicine_id } = req.body;
+    const deleteQuery = 'DELETE FROM medicines WHERE medicine_id = ?';
+    const param = [medicine_id];
 
     try {
         await pool.execute(deleteQuery, param);
-        console.log("Medicine deleted successfully with name:", medicine_name);
+        console.log("Medicine deleted successfully with ID:", medicine_id);
         res.redirect('/medicine');
     } catch (error) {
         console.error('Error deleting medicine:', error);
@@ -240,16 +252,47 @@ app.post('/add_patient', async(req, res) => {
 });
 
 app.post('/delete_patient', async(req, res) => {
-    const { email } = req.body;
-    const deleteQuery = 'DELETE FROM patients WHERE email = ?';
-    const param = [email];
+    const { patient_id } = req.body;
+    const deleteQuery = 'DELETE FROM patients WHERE patient_id = ?';
+    const param = [patient_id];
 
     try {
         await pool.execute(deleteQuery, param);
-        console.log("Patient deleted successfully with email:", email);
+        console.log("Patient deleted successfully with ID:", patient_id);
         res.redirect('/patient');
     } catch (error) {
         console.error('Error deleting patient:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+/**************************************************************/
+
+app.post('/add_doctor', async(req, res) => {
+    const { first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor} = req.body;
+    const insertQuery = 'INSERT INTO doctors (first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const params = [first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor];
+
+    try {
+        await pool.execute(insertQuery, params);
+        console.log("Doctor added successfully:", first_name, last_name);
+        res.redirect('/doctor');
+    } catch (error) {
+        console.error('Error adding doctor:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/delete_doctor', async(req, res) => {
+    const { doctor_id } = req.body;
+    const deleteQuery = 'DELETE FROM doctors WHERE doctor_id = ?';
+    const param = [doctor_id];
+
+    try {
+        await pool.execute(deleteQuery, param);
+        console.log("Doctor deleted successfully with ID:", doctor_id);
+        res.redirect('/doctor');
+    } catch (error) {
+        console.error('Error deleting doctor:', error);
         res.status(500).send('Internal Server Error');
     }
 });
