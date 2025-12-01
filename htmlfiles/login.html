@@ -8,14 +8,48 @@
         <meta charset="UTF-8"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Doctor's Portal</title>
+
+        <style>
+            body{
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                background: #d3dbe7;
+                margin:0;
+                padding: 0;
+            }
+
+            header{
+                background: #75c7e5;
+                padding: 20px;
+                text-align: center;
+                color:#245a6d;
+                font-size: 24px;
+                font-weight: bold;
+                margin-top:1%;
+            }
+
+            .welcome {
+                font-size:20px;
+                margin-bottom: 10px;
+                color:black;
+                background:white;
+                padding: 10px;
+                border-radius: 30px;
+                text-align: center;
+                flex-direction: column;
+                width: 40%;
+                margin: 20px auto;
+            }
+
+
+        </style>
     </head>
     <body>
-        <h1>Welcome to the Doctor's Portal</h1>
+        <header>Welcome to the Doctor's Portal</header>
         <p>Please log in to continue.</p>
 
-        <form action="/login" method="post">
+        <form class="welcome" action="/login" method="post">
             <label>Email:</label>
-            <input type="text" id="email" name="email" placeholder="Enter your email" required> 
+            <input type="text" id="email" name="email" placeholder="Enter your email" required><br><br>
 
             <label>Password:</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
