@@ -65,7 +65,6 @@
                 <th>Last Name</th>
                 <th>Specialty</th>
                 <th>Department</th>
-                <th>License #</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Office #</th>
@@ -90,11 +89,10 @@
                     row.insertCell(2).innerText = d.last_name;
                     row.insertCell(3).innerText = d.specialty;
                     row.insertCell(4).innerText = d.department || "";
-                    row.insertCell(5).innerText = d.license_number || "";
-                    row.insertCell(6).innerText = d.phone_number || "";
-                    row.insertCell(7).innerText = d.email || "";
-                    row.insertCell(8).innerText = d.office_number || "";
-                    row.insertCell(9).innerText = d.current_doctor ? "Yes" : "No";
+                    row.insertCell(5).innerText = d.phone_number || "";
+                    row.insertCell(6).innerText = d.email || "";
+                    row.insertCell(7).innerText = d.office_number || "";
+                    row.insertCell(8).innerText = d.current_doctor ? "Yes" : "No";
                 });
             })
             .catch(err => console.error("Error loading doctors:", err));
