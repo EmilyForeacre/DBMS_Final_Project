@@ -27,10 +27,11 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000 * 1 // Session expires after 30 seconds of inactivity
+        maxAge: 60000 * 1 // Session expires after 1 minute of inactivity
     }
 })); 
 
+// Serve static files from the 'public' directory
 async function readAndServe(path, res) {
     try {
         const data = await fsp.readFile(path);
@@ -49,9 +50,11 @@ app.get('/', function(req, res) {
     console.log(req.session);
     console.log(req.sessionID);
 
+    // if the user is already logged in, serve dashboard.html
     if(req.session.loggedIn) {
         return readAndServe("./htmlfiles/dashboard.html", res);
     } else {
+        // if the user is not logged in, serve login.html
         readAndServe("./htmlfiles/login.html", res);
     }
 });
@@ -86,6 +89,7 @@ app.get('/search', function(req, res) {
 /**************************************************************/
 
 //gets for fetching data from the database and returning it as json
+// in order to populate the tables within each respective html file
 app.get('/appointments', async(req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM appointments JOIN patients ON appointments.patient_id = patients.patient_id JOIN doctors ON appointments.doctor_id = doctors.doctor_id');
@@ -169,7 +173,7 @@ app.post('/login', function(req, res) {
             } else {
                 //show error if login fails
                 console.log("Login failed");
-                
+
                 readAndServe("./htmlfiles/login.html", res);
 
                 //reset the values of emails and password
@@ -180,6 +184,7 @@ app.post('/login', function(req, res) {
         }
         
     } catch (error) {
+        // if there are any errors during the process, log them to the console 
         console.error('Error executing login query:', error);
 
     }
@@ -189,31 +194,39 @@ app.post('/login', function(req, res) {
 
 // all the posts for appointements.html
 app.post('/add_appointment', async(req, res) => {
+    // get the values from the form submission and put them into quaries
     const { patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit } = req.body;
     const insertQuery = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason_for_visit, status) VALUES (?, ?, ?, ?, ?, "Scheduled")';
     const params = [patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit];
+    
+    // try to execute the query and catch any errors
     try {
         await pool.execute(insertQuery, params);
-
+        // log success message and redirect to appointments page
         console.log("Appointment added successfully for patient ID:", patient_id);
         res.redirect('/appointment');
 
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error adding appointment:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
 app.post('/delete_appointment', async(req, res) => {
+    // get form values and prepare a delete query
     const {patient_id, appointment_date} = req.body;
     const deleteQuery = 'DELETE FROM appointments WHERE patient_id = ? AND appointment_date = ?';
     const param = [patient_id, appointment_date];    
 
+    // try to execute the delete query and catch any errors
     try {
+        // execute the delete query with provided parameters
         await pool.execute(deleteQuery, param);
         console.log("Appointment deleted successfully for patient ID:", patient_id, " on date:", appointment_date);
         res.redirect('/appointment');
     } catch (error) {   
+        // log error message and send 500 status code
         console.error('Error deleting appointment:', error);
         res.status(500).send('Internal Server Error');
     }
@@ -223,30 +236,38 @@ app.post('/delete_appointment', async(req, res) => {
 
 // all posts for medicine.html 
 app.post('/add_medicine', async(req, res) => {
+    // get form values and prepare an insert query
     const { medicine_name, generic_name,manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used} = req.body;
     const insertQuery = 'INSERT INTO medicines (medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used];
 
+    // try to execute the insert query and catch any errors
     try {
+        // execute the insert query with provided parameters
         await pool.execute(insertQuery, params);
         console.log("Medicine added successfully:", medicine_name);
         res.redirect('/medicine');
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error adding medicine:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
 app.post('/delete_medicine', async(req, res) => {
+    // get form values and prepare a delete query
     const { medicine_id } = req.body;
     const deleteQuery = 'DELETE FROM medicines WHERE medicine_id = ?';
     const param = [medicine_id];
 
+    // try to execute the delete query and catch any errors
     try {
+        // execute the delete query with provided parameters
         await pool.execute(deleteQuery, param);
         console.log("Medicine deleted successfully with ID:", medicine_id);
         res.redirect('/medicine');
     } catch (error) {
+        //  log error message and send 500 status code
         console.error('Error deleting medicine:', error);
         res.status(500).send('Internal Server Error');
     }
@@ -255,30 +276,38 @@ app.post('/delete_medicine', async(req, res) => {
 
 // all posts for patients
 app.post('/add_patient', async(req, res) => {
+    // get form values and prepare an insert query
     const { first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient} = req.body;
     const insertQuery = 'INSERT INTO patients (first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient];
 
+    // try to execute the insert query and catch any errors
     try {
+        // execute the insert query with provided parameters
         await pool.execute(insertQuery, params);
         console.log("Patient added successfully:", first_name, last_name);
         res.redirect('/patient');
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error adding patient:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
 app.post('/delete_patient', async(req, res) => {
+    // get form values and prepare a delete query
     const { patient_id } = req.body;
     const deleteQuery = 'DELETE FROM patients WHERE patient_id = ?';
     const param = [patient_id];
 
+    // try to execute the delete query and catch any errors
     try {
+        // execute the delete query with provided parameters
         await pool.execute(deleteQuery, param);
         console.log("Patient deleted successfully with ID:", patient_id);
         res.redirect('/patient');
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error deleting patient:', error);
         res.status(500).send('Internal Server Error');
     }
@@ -286,30 +315,38 @@ app.post('/delete_patient', async(req, res) => {
 /**************************************************************/
 
 app.post('/add_doctor', async(req, res) => {
+    //  get form values and prepare an insert query
     const { first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor} = req.body;
     const insertQuery = 'INSERT INTO doctors (first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor];
 
+    // try to execute the insert query and catch any errors
     try {
+        // execute the insert query with provided parameters
         await pool.execute(insertQuery, params);
         console.log("Doctor added successfully:", first_name, last_name);
         res.redirect('/doctor');
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error adding doctor:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
 app.post('/delete_doctor', async(req, res) => {
+    // get form values and prepare a delete query
     const { doctor_id } = req.body;
     const deleteQuery = 'DELETE FROM doctors WHERE doctor_id = ?';
     const param = [doctor_id];
 
+    // try to execute the delete query and catch any errors
     try {
+        // execute the delete query with provided parameters
         await pool.execute(deleteQuery, param);
         console.log("Doctor deleted successfully with ID:", doctor_id);
         res.redirect('/doctor');
     } catch (error) {
+        // log error message and send 500 status code
         console.error('Error deleting doctor:', error);
         res.status(500).send('Internal Server Error');
     }
@@ -318,10 +355,12 @@ app.post('/delete_doctor', async(req, res) => {
 
 // post for search.html
 app.post('/search_records', async(req, res) => {
+    // get form values and prepare a search query
     const { table_name, search_column, search_value } = req.body;
     const searchQuery = 'SELECT * FROM ?? WHERE ?? = ?';
     const params = [table_name, search_column, search_value];
     
+    // try to execute the search query and catch any errors
     try {
         // use the pool to query the database regarding specific things
         const [rows] = await pool.query(searchQuery, params);
@@ -348,6 +387,7 @@ app.post('/search_records', async(req, res) => {
             res.send("<html><body><h1>No records found.</h1></body></html>");
         }
     } catch (error) {
+        //  log error message and send 500 status code
         console.error('Error searching tables:', error);
         res.status(500).send('Internal Server Error');
     }
