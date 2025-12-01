@@ -7,19 +7,80 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Doctor's Portal Dashboard</title>
+        <title>Doctor's Portal Directory</title>
+
+        <style>
+            body{
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                background: #d3dbe7;
+                margin:0;
+                padding: 0;
+            }
+
+            header{
+                background: #75c7e5;
+                padding: 20px;
+                text-align: center;
+                color:#245a6d;
+                font-size: 24px;
+                font-weight: bold;
+                margin-top:1%;
+            }
+
+            .welcome {
+                font-size:15px;
+                margin-bottom: 5px;
+                color:black;
+                background:white;
+                padding: 10px;
+                border-radius: 10px;
+                width: 22%;
+                
+            }
+
+            /* Menu Cards */
+            .menu {
+                width: 60%;
+                margin: 20px auto;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .menu a {
+                text-decoration: none;
+                background: #ffffff;
+                padding: 15px;
+                border-radius: 10px;
+                font-size: 18px;
+                color: #2a6ac7;
+                border: 2px solid #d0d7e2;
+                text-align: center;
+                transition: 0.2s;
+            }
+
+            .menu a:hover {
+                background: #e9f1ff;
+                border-color: #2a6ac7;
+            }
+        
+
+
+        </style>
     </head>
     <body>
-        <h1>Welcome to the Doctor's Portal Dashboard</h1>
-        <p>You are now logged in as a Doctor.</p>
-        <form action="/logout" method="get"><button type="submit">Logout</button></form>
+        <header>Welcome to the Doctor's Portal Dashboard</header>
+        <p class="welcome">Welcome, you are now logged in as a Doctor!</p>
+        <form action="/logout" method="get">
+            <button type="submit">Logout</button>
+        </form>
 
-        <ul>
-            <li><a href="http://localhost:3000/patient">View Patients</a></li>
-            <li><a href="http://localhost:3000/appointment">Manage Appointments</a></li>
-            <li><a href="http://localhost:3000/doctor">Doctors table</a></li>
-            <li><a href="http://localhost:3000/medicine">Medicine Records</a></li>
-            <li><a href="http://localhost:3000/search">Search Tables</a></li>
-        </ul>
+        <div class="menu">
+            <a href="http://localhost:3000/patient">View Patients</a></li>
+            <a href="http://localhost:3000/appointment">Manage Appointments</a></li>
+            <a href="http://localhost:3000/doctor">Doctors table</a></li>
+            <a href="http://localhost:3000/medicine">Medicine Records</a></li>
+            <a href="http://localhost:3000/search">Search Tables</a></li>
+        </div>
     </body>
 </html>
