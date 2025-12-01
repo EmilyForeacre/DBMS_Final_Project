@@ -24,7 +24,7 @@ pool.getConnection()
     })
     .catch(err => {
         console.error("Database Pool Error: Could not connect to MySQL! Check credentials and if the server is running.", err.message);
-        exit(1); // Exit the application if the connection fails
+        process.exit() // Exit the application if the connection fails
     });
 
 module.exports = pool;
