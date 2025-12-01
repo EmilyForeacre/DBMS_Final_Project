@@ -165,11 +165,13 @@ app.post('/login', function(req, res) {
                 console.log(req.sessionID);
                 
                 //redirect to dashboard upon successful login
-                res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
+                readAndServe("./htmlfiles/dashboard.html", res);
             } else {
                 //show error if login fails
-                res.status(401).send({msg: 'Login failed: Invalid email or password.'});
+                console.log("Login failed");
                 
+                readAndServe("./htmlfiles/login.html", res);
+
                 //reset the values of emails and password
                 emails = '';
                 password = '';
