@@ -29,6 +29,9 @@ node thebackend.js
 
 The code will return the web address used for ease of access when the program is initially started up 
 
+## The EER Database Diagram
+![EER Diagram](https://github.com/EmilyForeacre/DBMS_Final_Project/blob/main/EER.png)
+
 ## What each group member is doing
 Cooper
 - tables
