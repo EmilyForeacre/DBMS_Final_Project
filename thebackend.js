@@ -232,6 +232,24 @@ app.post('/delete_appointment', async(req, res) => {
     }
 
 });
+
+app.post('/update_appointment_status', async(req, res) => {
+    // get form values and prepare an update query
+    const { appointment_id, status } = req.body;
+    const updateQuery = 'UPDATE appointments SET status = ? WHERE appointment_id = ?';
+    const params = [status, appointment_id];
+    // try to execute the update query and catch any errors
+    try {
+        // execute the update query with provided parameters
+        await pool.execute(updateQuery, params);
+        console.log("Appointment status updated successfully for appointment id", appointment_id);
+        res.redirect('/appointment');
+    } catch (error) {
+        // log error message and send 500 status code
+        console.error('Error updating appointment status:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 /**************************************************************/
 
 // all posts for medicine.html 
@@ -272,6 +290,7 @@ app.post('/delete_medicine', async(req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 /**************************************************************/
 
 // all posts for patients
