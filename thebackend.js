@@ -3,8 +3,10 @@
 //Submission Date: 
 //Assignment: Final Project, Backend Code
 
+
 // to view http://localhost:3000/
 // establishing constants, requirements from express and mysql2/promise
+const session = require('express-session');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -13,13 +15,20 @@ const mysql = require('mysql2/promise');
 const fsp = require('fs').promises;
 
 const pool = require('./mysqlConnection');
-const { read } = require('fs');
 
 //testing for solid connection to database
 
 // Middleware to parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({
+    secret: 'finalprojectsecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60000 * 0.5 // Session expires after 30 seconds of inactivity
+    }
+})); 
 
 async function readAndServe(path, res) {
     try {
@@ -36,6 +45,8 @@ async function readAndServe(path, res) {
 // specifically serves the login.html file when accessing the root URL
 // All the .gets serve their respective html files
 app.get('/', function(req, res) {
+    console.log(req.session);
+    console.log(req.sessionID);
     readAndServe("./htmlfiles/login.html", res);
 });
 
@@ -134,11 +145,14 @@ app.post('/login', function(req, res) {
             // otherwise, login fails
             if (results[0].length == 1) {
                 console.log("Login successful for email:", emails);
+                
+                //set session variable to indicate user has logged in
+                req.session.loggedIn = true;
+
                 res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
             } else {
-                //reload to the sendfile screen if login fails
-                console.log("Login failed for email:", emails);
-                res.sendFile(path.join(__dirname, './htmlfiles/login.html'));
+                //show error if login fails
+                res.status(401).send({msg: 'Login failed: Invalid email or password.'});
                 
                 //reset the values of emails and password
                 emails = '';
