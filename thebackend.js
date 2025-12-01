@@ -15,6 +15,7 @@ const mysql = require('mysql2/promise');
 const fsp = require('fs').promises;
 
 const pool = require('./mysqlConnection');
+const e = require('express');
 
 //testing for solid connection to database
 
@@ -26,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000 * 0.5 // Session expires after 30 seconds of inactivity
+        maxAge: 60000 * 1 // Session expires after 30 seconds of inactivity
     }
 })); 
 
@@ -47,7 +48,12 @@ async function readAndServe(path, res) {
 app.get('/', function(req, res) {
     console.log(req.session);
     console.log(req.sessionID);
-    readAndServe("./htmlfiles/login.html", res);
+
+    if(req.session.loggedIn) {
+        return readAndServe("./htmlfiles/dashboard.html", res);
+    } else {
+        readAndServe("./htmlfiles/login.html", res);
+    }
 });
 
 app.get('/logout', function(req, res) {
@@ -130,7 +136,9 @@ app.post('/login', function(req, res) {
     // password should be license_number
     const loginquery = 'SELECT * FROM doctors WHERE email = ? AND license_number = ?';
 
-    
+    if(req.session.loggedIn) {
+        return readAndServe("./htmlfiles/dashboard.html", res);
+    }
 
     try {
         executeLoginQuery();
@@ -147,8 +155,13 @@ app.post('/login', function(req, res) {
                 console.log("Login successful for email:", emails);
                 
                 //set session variable to indicate user has logged in
-                req.session.loggedIn = true;
 
+                req.session.loggedIn = true;
+                req.session.userEmail = emails;
+                req.session.userPass = password;
+                console.log(req.session);
+                console.log(req.sessionID);
+                
                 res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
             } else {
                 //show error if login fails
