@@ -36,6 +36,7 @@ The code will return the web address used for ease of access when the program is
 Cooper
 - tables
 - html
+- input validation
 
 Emily
 - html
@@ -44,3 +45,4 @@ Emily
 Paul
 - backend 
 - readme
+- session information

@@ -1,3 +1,4 @@
+const e = require('express');
 const mysql = require('mysql2/promise');
 
 // Configuration details
@@ -23,6 +24,7 @@ pool.getConnection()
     })
     .catch(err => {
         console.error("Database Pool Error: Could not connect to MySQL! Check credentials and if the server is running.", err.message);
+        process.exit() // Exit the application if the connection fails
     });
 
 module.exports = pool;
