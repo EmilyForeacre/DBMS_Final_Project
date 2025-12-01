@@ -136,10 +136,12 @@ app.post('/login', function(req, res) {
     // password should be license_number
     const loginquery = 'SELECT * FROM doctors WHERE email = ? AND license_number = ?';
 
+    // if the user is already logged in, redirect to dashboard. 
     if(req.session.loggedIn) {
         return readAndServe("./htmlfiles/dashboard.html", res);
     }
 
+    // if the user is not already logged in, proceed with login
     try {
         executeLoginQuery();
 
@@ -155,13 +157,14 @@ app.post('/login', function(req, res) {
                 console.log("Login successful for email:", emails);
                 
                 //set session variable to indicate user has logged in
-
                 req.session.loggedIn = true;
                 req.session.userEmail = emails;
                 req.session.userPass = password;
+                //this is to show that cookies are saved. In a real program this would be absent for security
                 console.log(req.session);
                 console.log(req.sessionID);
                 
+                //redirect to dashboard upon successful login
                 res.sendFile(path.join(__dirname, './htmlfiles/dashboard.html'));
             } else {
                 //show error if login fails
