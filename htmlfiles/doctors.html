@@ -52,17 +52,17 @@
 <div class="container">
 
     <!-- Add a Doctor -->
-    <form class="welcome" action="/add_doctor" method="post">
+    <form class="welcome" action="/add_doctor" method="post" novalidate>
         <h2>Add Doctor</h2>
 
         <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name" required><br><br>
+        <input type="text" id="first_name" name="first_name" ><br><br>
 
         <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name" required><br><br>
+        <input type="text" id="last_name" name="last_name" ><br><br>
 
         <label for="specialty">Specialty:</label><br>
-        <input type="text" id="specialty" name="specialty" required><br><br>
+        <input type="text" id="specialty" name="specialty" ><br><br>
 
         <label for="department">Department:</label><br>
         <input type="text" id="department" name="department"><br><br>
@@ -89,7 +89,7 @@
     </form>
 
     <!-- Delete a Doctor -->
-    <form class="welcome" action="/delete_doctor" method="post">
+    <form class="welcome" action="/delete_doctor" method="post" novalidate>
         <h2>Delete Doctor</h2>
 
         <label for="doctor_id">Enter Doctor ID to Delete:</label><br>
@@ -140,6 +140,110 @@
                 });
             })
             .catch(err => console.error("Error loading doctors:", err));
+    </script>
+    <script>
+        document.querySelector('form[action="/add_doctor"]').addEventListener("submit", function (e) {
+
+        const firstName = document.getElementById("first_name");
+        const lastName = document.getElementById("last_name");
+        const specialty = document.getElementById("specialty");
+        const licenseNum = document.getElementById("license_number");
+        const phone = document.getElementById("phone_number");
+        const email = document.getElementById("email");
+
+        const first = firstName.value.trim();
+        const last = lastName.value.trim();
+        const special = specialty.value.trim();
+        const license = licenseNum.value.trim();
+        const phoneVal = phone.value.trim();
+        const emailVal = email.value.trim();
+        
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //first name validation
+        if (first == "") {
+            showError (firstName, "First name is required");
+            isValid = false;
+        }
+
+        //last name validation
+        if (last == "") {
+            showError (lastName, "Last name is required");
+            isValid = false;
+        }
+
+        //Speciality Validation
+        if (special == "") {
+            showError (specialty, "Specialty is required");
+            isValid = false;
+        }
+
+
+        //License Number Validation
+        const licensePattern = /^LIC\d{5}$/;
+        if (license === "") {
+            showError(licenseNum, "License number is required.");
+            isValid = false;
+        } else if (!licensePattern.test(license)) {
+            showError(licenseNum, "License number must be in format LIC + 5 digits.");
+            isValid = false;
+        }
+        
+        //Phone number validation
+        const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+         if (phoneVal !== "" && !phonePattern.test(phoneVal)) {
+            showError (phone, "Phone must be in format 123-456-7890");
+            isValid = false;
+        }
+        
+        //Email must end in @medportal.com
+        if (emailVal !== "" && !emailVal.endsWith("@medportal.com")) {
+            showError(email, "Email must end with @medportal.com.");
+            isValid = false;
+        }
+
+        // Block form submission if invalid
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    document.querySelector('form[action="/delete_doctor"]').addEventListener("submit", function (e) {
+
+        const id = document.getElementById("doctor_id");
+        const idVal = id.value.trim();
+
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //Doctor ID validation
+        if (idVal === "") {
+            showError(id, "Doctor ID is required.");
+            isValid = false;
+        } else if (isNaN(idVal)) {
+            showError(id, "Doctor ID must be a number.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+    // Shows errors message
+    function showError(field, message) {
+        const error = document.createElement("div");
+        error.className = "error";
+        error.style.color = "red";
+        error.style.marginTop = "6px";
+        error.style.fontSize = "14px";
+        error.textContent = message;
+        field.insertAdjacentElement("afterend", error);
+        }
     </script>
 
 </body>

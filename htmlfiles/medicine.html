@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+F<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,20 +52,20 @@
 <div class="container">
 
     <!-- Add Medicine Form -->
-    <form class="welcome" action="/add_medicine" method="post">
+    <form class="welcome" action="/add_medicine" method="post" novalidate>
         <h2>Add Medicine</h2>
 
         <label for="medicine_name">Medicine Name:</label><br>
-        <input type="text" id="medicine_name" name="medicine_name" required><br><br>
+        <input type="text" id="medicine_name" name="medicine_name" ><br><br>
 
         <label for="generic_name">Generic Name:</label><br>
         <input type="text" id="generic_name" name="generic_name"><br><br>
 
         <label for="dosage_type">Dosage Type:</label><br>
-        <input type="text" id="dosage_type" name="dosage_type" required><br><br>
+        <input type="text" id="dosage_type" name="dosage_type" ><br><br>
 
         <label for="strength">Strength:</label><br>
-        <input type="text" id="strength" name="strength" required><br><br>
+        <input type="text" id="strength" name="strength" ><br><br>
 
         <label for="manufacturer">Manufacturer:</label><br>
         <input type="text" id="manufacturer" name="manufacturer"><br><br>
@@ -92,11 +92,11 @@
     </form>
 
     <!-- Delete Medicine Form -->
-    <form class="welcome" action="/delete_medicine" method="post">
+    <form class="welcome" action="/delete_medicine" method="post" novalidate>
         <h2>Delete Medicine</h2>
 
         <label for="medicine_id">Enter Medicine Name to Delete:</label><br>
-        <input type="text" id="medicine_id" name="medicine_id" required><br><br>
+        <input type="text" id="medicine_id" name="medicine_id" ><br><br>
 
         <button type="submit">Delete Medicine</button>
     </form>
@@ -144,6 +144,120 @@
                 });
             })
             .catch(err => console.error("Error loading medicines:", err));
+    </script>
+    <script>
+        document.querySelector('form[action="/add_medicine"]').addEventListener("submit", function (e) {
+
+        const medicineName = document.getElementById("medicine_name");
+        const genericName = document.getElementById("generic_name");
+        const strength = document.getElementById("strength");
+        const dosage = document.getElementById("dosage_type");
+        const manufacturer = document.getElementById("manufacturer");
+        const prescription = document.getElementById("needs_prescription");
+        const used = document.getElementById("currently_used");
+        
+        const med = medicineName.value.trim();
+        const genericVal = genericName.value.trim();
+        const strengthVal = strength.value.trim();
+        const dosageVal = dosage.value.trim();
+        const manufacturerVal = manufacturer.value.trim();
+        const prescriptionVal = prescription.value.trim();
+        const usedVal = used.value.trim();
+        
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //meds name validation
+        if (med == "") {
+            showError (medicineName, "Medicine name is required");
+            isValid = false;
+        }
+
+
+        const lettersPattern = /^[A-Za-z\s]+$/;//Generic name validation
+        if (genericVal !== "" && !lettersPattern.test(genericVal)) {
+            showError(genericName, "Generic name must contain only letters.");
+            isValid = false;
+        }
+
+        //strength validation
+        const strengthPattern = /^\d+\s+[A-Za-z].*$/;
+        if (strengthVal === "") {
+            showError(strength, "Strength is required.");
+            isValid = false;
+        } else if (!strengthPattern.test(strengthVal)) {
+            showError(strength, "Strength must start with a number followed by a space, then letters");
+            isValid = false;
+        }
+        
+        //Dosage type
+        if (dosageVal === "") {
+            showError(dosage, "Dosage type is required.");
+            isValid = false;
+        } else if (!lettersPattern.test(dosageVal)) {
+            showError(dosage, "Dosage type must contain only letters.");
+            isValid = false;
+        }
+        
+        //Needs Prescription validation
+        if (prescription.value === "") {
+            showError(prescription, "Please select yes or no.");
+            isValid = false;
+        }
+
+        if (manufacturerVal == "") {
+            showError (manufacturer, "Manufacturer name is required");
+            isValid = false;
+        }
+
+        if (usedVal === "") {
+        showError(used, "Please select yes or no.");
+        isValid = false;
+        }
+
+        
+
+        // Block form submission if invalid
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    document.querySelector('form[action="/delete_medicine"]').addEventListener("submit", function (e) {
+
+        const id = document.getElementById("medicine_id");
+        const idVal = id.value.trim();
+
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //Medicine ID validation
+        if (idVal === "") {
+            showError(id, "Medicine ID is required.");
+            isValid = false;
+        } else if (isNaN(idVal)) {
+            showError(id, "Medicine ID must be a number.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+    // Shows errors message
+    function showError(field, message) {
+        const error = document.createElement("div");
+        error.className = "error";
+        error.style.color = "red";
+        error.style.marginTop = "6px";
+        error.style.fontSize = "14px";
+        error.textContent = message;
+        field.insertAdjacentElement("afterend", error);
+        }
     </script>
 </body>
 </html>
