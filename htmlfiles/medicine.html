@@ -145,5 +145,119 @@ F<!DOCTYPE html>
             })
             .catch(err => console.error("Error loading medicines:", err));
     </script>
+    <script>
+        document.querySelector('form[action="/add_medicine"]').addEventListener("submit", function (e) {
+
+        const medicineName = document.getElementById("medicine_name");
+        const genericName = document.getElementById("generic_name");
+        const strength = document.getElementById("strength");
+        const dosage = document.getElementById("dosage_type");
+        const manufacturer = document.getElementById("manufacturer");
+        const prescription = document.getElementById("needs_prescription");
+        const used = document.getElementById("currently_used");
+        
+        const med = medicineName.value.trim();
+        const genericVal = genericName.value.trim();
+        const strengthVal = strength.value.trim();
+        const dosageVal = dosage.value.trim();
+        const manufacturerVal = manufacturer.value.trim();
+        const prescriptionVal = prescription.value.trim();
+        const usedVal = used.value.trim();
+        
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //meds name validation
+        if (med == "") {
+            showError (medicineName, "Medicine name is required");
+            isValid = false;
+        }
+
+
+        const lettersPattern = /^[A-Za-z\s]+$/;//Generic name validation
+        if (genericVal !== "" && !lettersPattern.test(genericVal)) {
+            showError(genericName, "Generic name must contain only letters.");
+            isValid = false;
+        }
+
+        //strength validation
+        const strengthPattern = /^\d+\s+[A-Za-z].*$/;
+        if (strengthVal === "") {
+            showError(strength, "Strength is required.");
+            isValid = false;
+        } else if (!strengthPattern.test(strengthVal)) {
+            showError(strength, "Strength must start with a number followed by a space, then letters");
+            isValid = false;
+        }
+        
+        //Dosage type
+        if (dosageVal === "") {
+            showError(dosage, "Dosage type is required.");
+            isValid = false;
+        } else if (!lettersPattern.test(dosageVal)) {
+            showError(dosage, "Dosage type must contain only letters.");
+            isValid = false;
+        }
+        
+        //Needs Prescription validation
+        if (prescription.value === "") {
+            showError(prescription, "Please select yes or no.");
+            isValid = false;
+        }
+
+        if (manufacturerVal == "") {
+            showError (manufacturer, "Manufacturer name is required");
+            isValid = false;
+        }
+
+        if (usedVal === "") {
+        showError(used, "Please select yes or no.");
+        isValid = false;
+        }
+
+        
+
+        // Block form submission if invalid
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    document.querySelector('form[action="/delete_medicine"]').addEventListener("submit", function (e) {
+
+        const id = document.getElementById("medicine_id");
+        const idVal = id.value.trim();
+
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //Medicine ID validation
+        if (idVal === "") {
+            showError(id, "Medicine ID is required.");
+            isValid = false;
+        } else if (isNaN(idVal)) {
+            showError(id, "Medicine ID must be a number.");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+    // Shows errors message
+    function showError(field, message) {
+        const error = document.createElement("div");
+        error.className = "error";
+        error.style.color = "red";
+        error.style.marginTop = "6px";
+        error.style.fontSize = "14px";
+        error.textContent = message;
+        field.insertAdjacentElement("afterend", error);
+        }
+    </script>
 </body>
 </html>
