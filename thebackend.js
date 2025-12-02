@@ -60,7 +60,16 @@ app.get('/', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-    readAndServe("./htmlfiles/login.html", res)
+
+    // destroy the session and redirect to login page
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session during logout:', err);
+        }
+        res.clearCookie('connect.sid');
+        console.log('User logged out, session destroyed.');
+        readAndServe("./htmlfiles/login.html", res)
+    });
 });
 
 app.get('/patient', function(req, res) {
