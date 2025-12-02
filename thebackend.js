@@ -27,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000 * 1 // Session expires after 1 minute of inactivity
+        maxAge: 60000 * 10 // Session expires after 1 minute of inactivity
     }
 })); 
 
@@ -60,31 +60,70 @@ app.get('/', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-    readAndServe("./htmlfiles/login.html", res)
+
+    // destroy the session and redirect to login page
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session during logout:', err);
+        }
+        res.clearCookie('connect.sid');
+        console.log('User logged out, session destroyed.');
+        readAndServe("./htmlfiles/login.html", res)
+    });
 });
 
 app.get('/patient', function(req, res) {
-    readAndServe("./htmlfiles/patient.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/patient.html", res)
+    }
 });
 
 app.get('/appointment', function(req, res) {
-    readAndServe("./htmlfiles/appointments.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/appointments.html", res)
+    }
 });
 
 app.get('/doctor', function(req, res) {
-    readAndServe("./htmlfiles/doctors.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/doctors.html", res)
+    }
 });
 
 app.get('/medicine', function(req, res) {
-    readAndServe("./htmlfiles/medicine.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/medicine.html", res)
+    }
 });
 
 app.get('/dashboard', function(req, res) {
-    readAndServe("./htmlfiles/dashboard.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/dashboard.html", res)
+    }
 });
 
 app.get('/search', function(req, res) {
-    readAndServe("./htmlfiles/search.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/search.html", res)
+    }
 });
 /**************************************************************/
 
@@ -199,6 +238,11 @@ app.post('/add_appointment', async(req, res) => {
     const insertQuery = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason_for_visit, status) VALUES (?, ?, ?, ?, ?, "Scheduled")';
     const params = [patient_id, doctor_id, appointment_date, appointment_time,reason_for_visit];
     
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to add an appointment.');
+    }
+
     // try to execute the query and catch any errors
     try {
         await pool.execute(insertQuery, params);
@@ -217,7 +261,12 @@ app.post('/delete_appointment', async(req, res) => {
     // get form values and prepare a delete query
     const {patient_id, appointment_date} = req.body;
     const deleteQuery = 'DELETE FROM appointments WHERE patient_id = ? AND appointment_date = ?';
-    const param = [patient_id, appointment_date];    
+    const param = [patient_id, appointment_date];   
+    
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to delete an appointment.');
+    }
 
     // try to execute the delete query and catch any errors
     try {
@@ -238,6 +287,12 @@ app.post('/update_appointment_status', async(req, res) => {
     const { appointment_id, status } = req.body;
     const updateQuery = 'UPDATE appointments SET status = ? WHERE appointment_id = ?';
     const params = [status, appointment_id];
+
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to update appointment status.');
+    }
+
     // try to execute the update query and catch any errors
     try {
         // execute the update query with provided parameters
@@ -259,6 +314,11 @@ app.post('/add_medicine', async(req, res) => {
     const insertQuery = 'INSERT INTO medicines (medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [medicine_name, generic_name, manufacturer, dosage_type, strength, needs_prescription, instructions, side_effects, currently_used];
 
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to add medicine.');
+    }
+
     // try to execute the insert query and catch any errors
     try {
         // execute the insert query with provided parameters
@@ -277,6 +337,11 @@ app.post('/delete_medicine', async(req, res) => {
     const { medicine_id } = req.body;
     const deleteQuery = 'DELETE FROM medicines WHERE medicine_id = ?';
     const param = [medicine_id];
+
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to delete medicine.');
+    }
 
     // try to execute the delete query and catch any errors
     try {
@@ -300,6 +365,11 @@ app.post('/add_patient', async(req, res) => {
     const insertQuery = 'INSERT INTO patients (first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [first_name, last_name, date_of_birth, gender, phone_number, email, address, state, city, zip_code, insurance_provider, current_patient];
 
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to add patient.');
+    }
+
     // try to execute the insert query and catch any errors
     try {
         // execute the insert query with provided parameters
@@ -318,6 +388,11 @@ app.post('/delete_patient', async(req, res) => {
     const { patient_id } = req.body;
     const deleteQuery = 'DELETE FROM patients WHERE patient_id = ?';
     const param = [patient_id];
+
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to delete patient.');
+    }
 
     // try to execute the delete query and catch any errors
     try {
@@ -339,6 +414,10 @@ app.post('/add_doctor', async(req, res) => {
     const insertQuery = 'INSERT INTO doctors (first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const params = [first_name, last_name, specialty, department, license_number, phone_number, email, office_number, current_doctor];
 
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to add doctor.');
+    }
     // try to execute the insert query and catch any errors
     try {
         // execute the insert query with provided parameters
@@ -358,6 +437,10 @@ app.post('/delete_doctor', async(req, res) => {
     const deleteQuery = 'DELETE FROM doctors WHERE doctor_id = ?';
     const param = [doctor_id];
 
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to delete doctor.');
+    }
     // try to execute the delete query and catch any errors
     try {
         // execute the delete query with provided parameters
@@ -378,6 +461,11 @@ app.post('/search_records', async(req, res) => {
     const { table_name, search_column, search_value } = req.body;
     const searchQuery = 'SELECT * FROM ?? WHERE ?? = ?';
     const params = [table_name, search_column, search_value];
+
+    //if user is not logged in, return unauthorized status
+    if(req.session.loggedIn !== true) {
+        return res.status(401).send('Unauthorized: Please log in to search records.');
+    }
     
     // try to execute the search query and catch any errors
     try {

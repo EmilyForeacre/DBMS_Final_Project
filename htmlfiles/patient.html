@@ -59,13 +59,13 @@
             <h2>Add Patient</h2>
 
             <label for="first_name">First Name:</label><br>
-            <input type="text" id="first_name" name="first_name" required><br><br>
+            <input type="text" id="first_name" name="first_name"><br><br>
 
             <label for="last_name">Last Name:</label><br>
             <input type="text" id="last_name" name="last_name"><br><br>
 
-            <label for="date_of_birth">Date of Birth:</label><br>
-            <input type="date" id="date_of_birth" name="date_of_birth" required><br><br>
+        <label for="date_of_birth">Date of Birth:</label><br>
+        <input type="date" id="date_of_birth" name="date_of_birth"><br><br>
 
             <label for="gender">Gender:</label><br>
             <select id="gender" name="gender">
@@ -105,11 +105,11 @@
         </form>
     
         <!-- Delete Patient Form -->
-        <form class="welcome" action="/delete_patient" method="post">
+        <form class="welcome" action="/delete_patient" method="post" nonvalidate>
             <h2>Delete Patient</h2>
 
             <label for="patient_id">Enter Patient Email to Delete:</label><br>
-            <input type="text" id="patient_id" name="patient_id" required><br><br>
+            <input type="text" id="patient_id" name="patient_id"><br><br>
 
             <button type="submit">Delete Patient</button>
         </form>
@@ -164,5 +164,119 @@
                 })
                 .catch(err => console.error("Error loading patients:", err));
         </script>
+        <script>
+            document.querySelector('form[action="/add_patient"]').addEventListener("submit", function (e) {
+
+            const firstName = document.getElementById("first_name");
+            const lastName = document.getElementById("last_name");
+            const dob = document.getElementById("date_of_birth");
+            const phone = document.getElementById("phone_number");
+            const email = document.getElementById("email");
+            const state = document.getElementById("state");
+            const zip = document.getElementById("zip_code");
+
+            const first = firstName.value.trim();
+            const last = lastName.value.trim();
+            const birth = dob.value.trim();
+            const phoneVal = phone.value.trim();
+            const emailVal = email.value.trim();
+            const stateVal = state.value.trim();
+            const zipVal = zip.value.trim();
+
+
+            //Does not allow error messages to stack
+            document.querySelectorAll(".error").forEach(err => err.remove());
+
+            let isValid = true;
+
+            //first name validation
+            if (first == "") {
+                showError (firstName, "Firstname is required");
+                isValid = false;
+            }
+
+            //last name validation
+            if (last == "") {
+                showError (lastName, "Lastname is required");
+                isValid = false;
+            }
+
+            //dob validation
+            if (birth == "") {
+                showError (dob, "DOB is required");
+                isValid = false;
+            }
+
+            //Phone number validation (xxx-xxx-xxxx)
+            const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+            if (phoneVal !== "" && !phonePattern.test(phoneVal)) {
+                showError (phone, "Phone must be in format 123-456-7890");
+                isValid = false;
+            }
+
+            //Email Validation 
+            const emailPattern = /^[^\s@]+@[^\s@]+\.com$/;
+            if (emailVal !== "" && !emailPattern.test(emailVal)) {
+                showError (email, "Inncorrect email format");
+                isValid = false;
+            }
+
+            //State validation (2 letters)
+            const statePattern = /^[A-Za-z]{2}$/;
+            if (stateVal !== "" && !statePattern.test(stateVal)) {
+                showError(state, "State must be 2 letters.");
+                isValid = false;
+            }
+
+            //Zip code validation (5 digits)
+            const zipPattern = /^\d{5}$/;
+            if (zipVal !== "" && !zipPattern.test(zipVal)) {
+                showError(zip, "Zip code must be 5 digits.");
+                isValid = false;
+            }
+
+        // Block form submission if invalid
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+        document.querySelector('form[action="/delete_patient"]').addEventListener("submit", function (e) {
+
+        const id = document.getElementById("patient_id");
+        const idVal = id.value.trim();
+
+        //Does not allow error messages to stack
+        document.querySelectorAll(".error").forEach(err => err.remove());
+
+        let isValid = true;
+
+        //Patient ID validation
+        if (idVal === "") {
+            showError(id, "Patient ID is required.");
+            isValid = false;
+        } else if (isNaN(idVal)) {
+            showError(id, "Patient ID must be a number.");
+            isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+    }
+});
+// Shows errors message
+function showError(field, message) {
+    const error = document.createElement("div");
+    error.className = "error";
+    error.style.color = "red";
+    error.style.marginTop = "6px";
+    error.style.fontSize = "14px";
+    error.textContent = message;
+    field.insertAdjacentElement("afterend", error);
+}
+
+
+
+    </script>
 </body>
 </html>
