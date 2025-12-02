@@ -27,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000 * .01 // Session expires after 1 minute of inactivity
+        maxAge: 60000 * 1 // Session expires after 1 minute of inactivity
     }
 })); 
 
@@ -64,27 +64,57 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/patient', function(req, res) {
-    readAndServe("./htmlfiles/patient.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/patient.html", res)
+    }
 });
 
 app.get('/appointment', function(req, res) {
-    readAndServe("./htmlfiles/appointments.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/appointments.html", res)
+    }
 });
 
 app.get('/doctor', function(req, res) {
-    readAndServe("./htmlfiles/doctors.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/doctors.html", res)
+    }
 });
 
 app.get('/medicine', function(req, res) {
-    readAndServe("./htmlfiles/medicine.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/medicine.html", res)
+    }
 });
 
 app.get('/dashboard', function(req, res) {
-    readAndServe("./htmlfiles/dashboard.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/dashboard.html", res)
+    }
 });
 
 app.get('/search', function(req, res) {
-    readAndServe("./htmlfiles/search.html", res)
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/search.html", res)
+    }
 });
 /**************************************************************/
 
