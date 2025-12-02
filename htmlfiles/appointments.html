@@ -52,7 +52,7 @@
     <!-- add an appointment-->
     <div class="container">
 
-    <form class="welcome" action="/add_appointment" method = "post">
+    <form class="welcome" action="/add_appointment" method = "post" novalidate>
         
         <h2>Add Appointment</h2>
 
@@ -75,7 +75,7 @@
     </form>
 
     <!-- to delete the appointment-->
-    <form class="welcome" action="/delete_appointment" method="post">
+    <form class="welcome" action="/delete_appointment" method="post" novalidate>
         <h2>Delete Appointment</h2>
 
         <label for="patient_id">Enter patient ID and date of appointment to Delete</label>
@@ -86,7 +86,7 @@
     </form>
 
 
-    <form class="welcome" action="/update_appointment_status" method="post">
+    <form class="welcome" action="/update_appointment_status" method="post" novalidate>
         <h2>Update Appointment Status</h2>
 
         <label for="appointment_id">Appointment ID:</label><br>
@@ -146,6 +146,125 @@
                 });
             })
             .catch(err => console.error("Error loading appointments:", err));       
+    </script>
+    <script>
+        //Add Appointment validation
+    document.querySelector('form[action="/add_appointment"]').addEventListener("submit", function (e) {
+
+        const form = e.target; 
+
+        const patientID = form.querySelector("#patient_id");
+        const doctorID = form.querySelector("#doctor_id");
+        const date = form.querySelector("#appointment_date");
+        const time = form.querySelector("#appointment_time");
+        const reason = form.querySelector("#reason_for_visit");
+
+        const pVal = patientID.value.trim();
+        const dVal = doctorID.value.trim();
+        const dateVal = date.value.trim();
+        const timeVal = time.value.trim();
+        const reasonVal = reason.value.trim();
+
+        document.querySelectorAll(".error").forEach(err => err.remove());
+        let isValid = true;
+
+        if (pVal === "" || isNaN(pVal)) {
+            showError(patientID, "Patient ID must be a number.");
+            isValid = false;
+        }
+
+        if (dVal === "" || isNaN(dVal)) {
+            showError(doctorID, "Doctor ID must be a number.");
+            isValid = false;
+        }
+
+        if (dateVal === "") {
+            showError(date, "Appointment date is required.");
+            isValid = false;
+        }
+
+        if (timeVal === "") {
+            showError(time, "Appointment time is required.");
+            isValid = false;
+        }
+
+        const lettersPattern = /^[A-Za-z\s]+$/;
+        if (reasonVal !== "" && !lettersPattern.test(reasonVal)) {
+            showError(reason, "Reason must contain only letters.");
+            isValid = false;
+        }
+
+        if (!isValid) e.preventDefault();
+    });
+
+
+
+    // Delete Appointment Validation
+
+    document.querySelector('form[action="/delete_appointment"]').addEventListener("submit", function (e) {
+
+        const form = e.target;
+
+        const patientID = form.querySelector("#patient_id");
+        const date = form.querySelector("#appointment_date");
+
+        const pVal = patientID.value.trim();
+        const dateVal = date.value.trim();
+
+        document.querySelectorAll(".error").forEach(err => err.remove());
+        let isValid = true;
+
+        if (pVal === "" || isNaN(pVal)) {
+            showError(patientID, "Patient ID must be a number.");
+            isValid = false;
+        }
+
+        if (dateVal === "") {
+            showError(date, "Appointment date is required.");
+            isValid = false;
+        }
+
+        if (!isValid) e.preventDefault();
+    });
+
+
+
+    // Update Appointments Validation
+
+    document.querySelector('form[action="/update_appointment_status"]').addEventListener("submit", function (e) {
+
+        const appointmentID = document.getElementById("appointment_id");
+        const status = document.getElementById("status");
+
+        const idVal = appointmentID.value.trim();
+
+        document.querySelectorAll(".error").forEach(err => err.remove());
+        let isValid = true;
+
+        if (idVal === "" || isNaN(idVal)) {
+            showError(appointmentID, "Appointment ID must be a number.");
+            isValid = false;
+        }
+
+        if (status.value === "") {
+            showError(status, "Please select a status.");
+            isValid = false;
+        }
+
+            if (!isValid) e.preventDefault();
+});
+
+
+
+    function showError(field, message) {
+        const error = document.createElement("div");
+        error.className = "error";
+        error.style.color = "red";
+        error.style.marginTop = "6px";
+        error.style.fontSize = "14px";
+        error.textContent = message;
+        field.insertAdjacentElement("afterend", error);
+    }
     </script>
 </body>
 </html>
