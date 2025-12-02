@@ -4,14 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine Management</title>
+
+    <style>
+            body{
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                background: #d3dbe7;
+                margin:0;
+                padding: 0;
+            }
+
+            header{
+                background: #75c7e5;
+                padding: 20px;
+                text-align: center;
+                color:#245a6d;
+                font-size: 24px;
+                font-weight: bold;
+                margin-top:1%;
+            }
+
+            .welcome {
+                font-size:15px;
+                color:#2a6ac7;
+                background: white;
+                padding: 10px;
+                border-radius: 30px;
+                text-align: center;
+                width: 40%;
+                margin: 20px;
+                border-color: #2a6ac7;
+
+            }
+            .container {
+                display: flex;
+                justify-content: center;
+                gap: 5px;             
+                margin-top: 20px;
+                align-items: flex-start;
+
+            }
+    </style>
 </head>
 <body>
     <a href="http://localhost:3000/dashboard">Back to Dashboard</a>
-    <h1>Medicine Management</h1>
+    <header>Medicine Management</header>
+
+<div class="container">
 
     <!-- Add Medicine Form -->
-    <h2>Add Medicine</h2>
-    <form action="/add_medicine" method="post">
+    <form class="welcome" action="/add_medicine" method="post">
+        <h2>Add Medicine</h2>
+
         <label for="medicine_name">Medicine Name:</label><br>
         <input type="text" id="medicine_name" name="medicine_name" required><br><br>
 
@@ -49,14 +92,15 @@
     </form>
 
     <!-- Delete Medicine Form -->
-    <h2>Delete Medicine</h2>
-    <form action="/delete_medicine" method="post">
+    <form class="welcome" action="/delete_medicine" method="post">
+        <h2>Delete Medicine</h2>
+
         <label for="medicine_id">Enter Medicine Name to Delete:</label><br>
         <input type="text" id="medicine_id" name="medicine_id" required><br><br>
 
         <button type="submit">Delete Medicine</button>
     </form>
-
+</div>
     <!-- All Medicines Table -->
     <h2>All Medicines</h2>
     <table border="1" cellpadding="6">
