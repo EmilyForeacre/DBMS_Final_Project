@@ -107,6 +107,14 @@
 
     <!-- this is the layout of the appointments table-->>
     <h2>All Appointments</h2>
+    <div style="text-align:center; margin-top:20px;">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search appointments..." 
+        style="width:40%; padding:8px; border-radius:10px; border:1px solid #245a6d; background:#d3dbe7;"
+    >
+    </div>
     <table border="1" cellpadding="6">
         <thead>
             <tr>
@@ -145,7 +153,17 @@
                     row.insertCell(8).innerText = a.status;
                 });
             })
-            .catch(err => console.error("Error loading appointments:", err));       
+            .catch(err => console.error("Error loading appointments:", err));
+            
+            document.getElementById("searchInput").addEventListener("keyup", function () {
+                let filter = this.value.toLowerCase();
+                let rows = document.querySelectorAll("#appointmentTable tr");
+
+                rows.forEach(row => {
+                    let text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(filter) ? "" : "none";
+                });
+});
     </script>
 </body>
 </html>
