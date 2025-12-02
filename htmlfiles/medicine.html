@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+F<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,20 +52,20 @@
 <div class="container">
 
     <!-- Add Medicine Form -->
-    <form class="welcome" action="/add_medicine" method="post">
+    <form class="welcome" action="/add_medicine" method="post" novalidate>
         <h2>Add Medicine</h2>
 
         <label for="medicine_name">Medicine Name:</label><br>
-        <input type="text" id="medicine_name" name="medicine_name" required><br><br>
+        <input type="text" id="medicine_name" name="medicine_name" ><br><br>
 
         <label for="generic_name">Generic Name:</label><br>
         <input type="text" id="generic_name" name="generic_name"><br><br>
 
         <label for="dosage_type">Dosage Type:</label><br>
-        <input type="text" id="dosage_type" name="dosage_type" required><br><br>
+        <input type="text" id="dosage_type" name="dosage_type" ><br><br>
 
         <label for="strength">Strength:</label><br>
-        <input type="text" id="strength" name="strength" required><br><br>
+        <input type="text" id="strength" name="strength" ><br><br>
 
         <label for="manufacturer">Manufacturer:</label><br>
         <input type="text" id="manufacturer" name="manufacturer"><br><br>
@@ -92,11 +92,11 @@
     </form>
 
     <!-- Delete Medicine Form -->
-    <form class="welcome" action="/delete_medicine" method="post">
+    <form class="welcome" action="/delete_medicine" method="post" novalidate>
         <h2>Delete Medicine</h2>
 
         <label for="medicine_id">Enter Medicine Name to Delete:</label><br>
-        <input type="text" id="medicine_id" name="medicine_id" required><br><br>
+        <input type="text" id="medicine_id" name="medicine_id" ><br><br>
 
         <button type="submit">Delete Medicine</button>
     </form>
