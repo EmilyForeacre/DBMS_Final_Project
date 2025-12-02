@@ -39,7 +39,7 @@
                 justify-content: center;
                 gap: 5px;             
                 margin-top: 20px;
-                align-items: flex-start;   /* ← THIS fixes the tall empty box */
+                align-items: flex-start;
 
             }
             
@@ -235,48 +235,48 @@
                 isValid = false;
             }
 
-        // Block form submission if invalid
+            // Block form submission if invalid
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+            document.querySelector('form[action="/delete_patient"]').addEventListener("submit", function (e) {
+
+            const id = document.getElementById("patient_id");
+            const idVal = id.value.trim();
+
+            //Does not allow error messages to stack
+            document.querySelectorAll(".error").forEach(err => err.remove());
+
+            let isValid = true;
+
+            //Patient ID validation
+            if (idVal === "") {
+                showError(id, "Patient ID is required.");
+                isValid = false;
+            } else if (isNaN(idVal)) {
+                showError(id, "Patient ID must be a number.");
+                isValid = false;
+        }
+
         if (!isValid) {
             e.preventDefault();
         }
     });
-
-        document.querySelector('form[action="/delete_patient"]').addEventListener("submit", function (e) {
-
-        const id = document.getElementById("patient_id");
-        const idVal = id.value.trim();
-
-        //Does not allow error messages to stack
-        document.querySelectorAll(".error").forEach(err => err.remove());
-
-        let isValid = true;
-
-        //Patient ID validation
-        if (idVal === "") {
-            showError(id, "Patient ID is required.");
-            isValid = false;
-        } else if (isNaN(idVal)) {
-            showError(id, "Patient ID must be a number.");
-            isValid = false;
+    // Shows errors message
+    function showError(field, message) {
+        const error = document.createElement("div");
+        error.className = "error";
+        error.style.color = "red";
+        error.style.marginTop = "6px";
+        error.style.fontSize = "14px";
+        error.textContent = message;
+        field.insertAdjacentElement("afterend", error);
     }
 
-    if (!isValid) {
-        e.preventDefault();
-    }
-});
-// Shows errors message
-function showError(field, message) {
-    const error = document.createElement("div");
-    error.className = "error";
-    error.style.color = "red";
-    error.style.marginTop = "6px";
-    error.style.fontSize = "14px";
-    error.textContent = message;
-    field.insertAdjacentElement("afterend", error);
-}
 
 
-
-    </script>
+        </script>
 </body>
 </html>
