@@ -50,7 +50,7 @@
     <header>Search Tables</header>
 <div class="container">
     <!-- Search Form -->
-    <form class="welcome" action="/search_records" method="post">
+    <form class="welcome" action="/search_records" method="post" novalidate>
         <h2>Search Records</h2>
 
         <label for="table_name">Select Table:</label>
@@ -70,4 +70,52 @@
         <button type="submit">Search</button>
     </form>
 </div>
+<script>
+document.querySelector('form[action="/search_records"]').addEventListener("submit", function(e) {
+
+    const column = document.getElementById("search_column");
+    const value = document.getElementById("search_value");
+
+    const columnVal = column.value.trim();
+    const valueVal = value.value.trim();
+
+    document.querySelectorAll(".error").forEach(err => err.remove());
+
+    let isValid = true;
+
+    const lettersPattern = /^[A-Za-z_]+$/;
+    if (columnVal === "") {
+        showError(column, "Search column is required.");
+        isValid = false;
+    } else if (!lettersPattern.test(columnVal)) {
+        showError(column, "Column name must contain only letters (no numbers or symbols).");
+        isValid = false;
+    }
+
+    const valuePattern = /^[A-Za-z0-9\s]+$/;
+    if (valueVal === "") {
+        showError(value, "Search value is required.");
+        isValid = false;
+    } else if (!valuePattern.test(valueVal)) {
+        showError(value, "Search value can only contain letters, numbers, and spaces.");
+        isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+    }
+});
+
+function showError(field, message) {
+    const error = document.createElement("div");
+    error.className = "error";
+    error.style.color = "red";
+    error.style.marginTop = "6px";
+    error.style.fontSize = "14px";
+    error.textContent = message;
+    field.insertAdjacentElement("afterend", error);
+}
+</script>
+
+</body>
 </html>
