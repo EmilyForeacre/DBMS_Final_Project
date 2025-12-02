@@ -27,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000 * 10 // Session expires after 1 minute of inactivity
+        maxAge: 60000 * 10 // Session expires after 10 minute of inactivity
     }
 })); 
 
