@@ -40,7 +40,8 @@ Cooper
 
 Emily
 - html
-- styling
+- css styling
+- html search
 
 Paul
 - backend 
