@@ -4,14 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Tables</title>
+
+    <style>
+            body{
+                font-family:Georgia, 'Times New Roman', Times, serif;
+                background: #d3dbe7;
+                margin:0;
+                padding: 0;
+            }
+
+            header{
+                background: #75c7e5;
+                padding: 20px;
+                text-align: center;
+                color:#245a6d;
+                font-size: 24px;
+                font-weight: bold;
+                margin-top:1%;
+            }
+
+            .welcome {
+                font-size:15px;
+                color:#2a6ac7;
+                background: white;
+                padding: 10px;
+                border-radius: 30px;
+                text-align: center;
+                width: 40%;
+                margin: 20px;
+                border-color: #2a6ac7;
+
+            }
+            .container {
+                display: flex;
+                justify-content: center;
+                gap: 5px;             
+                margin-top: 20px;
+                align-items: flex-start;
+
+            }
+    </style>
 </head>
 <body>
     <a href="http://localhost:3000/dashboard">Back to Dashboard</a>
-    <h1>Search Tables</h1>
-
+    <header>Search Tables</header>
+<div class="container">
     <!-- Search Form -->
-    <h2>Search Records</h2>
-    <form action="/search_records" method="post">
+    <form class="welcome" action="/search_records" method="post">
+        <h2>Search Records</h2>
+
         <label for="table_name">Select Table:</label>
         <select id="table_name" name="table_name" required>
             <option value="patients">Patients</option>
@@ -28,4 +69,5 @@
 
         <button type="submit">Search</button>
     </form>
+</div>
 </html>
