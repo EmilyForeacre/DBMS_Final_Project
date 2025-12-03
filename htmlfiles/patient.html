@@ -174,6 +174,9 @@
             const email = document.getElementById("email");
             const state = document.getElementById("state");
             const zip = document.getElementById("zip_code");
+            const city = document.getElementById("city");
+            const address = document.getElementById("address");
+            const insurance = document.getElementById("insurance_provider");
 
             const first = firstName.value.trim();
             const last = lastName.value.trim();
@@ -182,6 +185,9 @@
             const emailVal = email.value.trim();
             const stateVal = state.value.trim();
             const zipVal = zip.value.trim();
+            const cityVal = city.value.trim();
+            const addressVal = address.value.trim();
+            const insuranceVal = insurance.value.trim();
 
 
             //Does not allow error messages to stack
@@ -208,6 +214,11 @@
             }
 
             //Phone number validation (xxx-xxx-xxxx)
+            if (phoneVal === "") {
+                showError(phone, "Phone number is required.");
+                isValid = false;
+            }
+
             const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
             if (phoneVal !== "" && !phonePattern.test(phoneVal)) {
                 showError (phone, "Phone must be in format 123-456-7890");
@@ -215,25 +226,60 @@
             }
 
             //Email Validation 
-            const emailPattern = /^[^\s@]+@[^\s@]+\.com$/;
+            if (emailVal === "") {
+                showError(email, "Email is required.");
+                isValid = false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (emailVal !== "" && !emailPattern.test(emailVal)) {
                 showError (email, "Inncorrect email format");
                 isValid = false;
             }
 
             //State validation (2 letters)
-            const statePattern = /^[A-Za-z]{2}$/;
+            if (stateVal === "") {
+                showError(email, "State is required.");
+                isValid = false;
+            }
+            
+            const statePattern = /^[A-Z]{2}$/;
             if (stateVal !== "" && !statePattern.test(stateVal)) {
-                showError(state, "State must be 2 letters.");
+                showError(state, "State must be 2 capitol letters.");
                 isValid = false;
             }
 
             //Zip code validation (5 digits)
+            if (zipVal === "") {
+                showError(zip, "Zip code is required.");
+                isValid = false;
+            }
+
             const zipPattern = /^\d{5}$/;
             if (zipVal !== "" && !zipPattern.test(zipVal)) {
                 showError(zip, "Zip code must be 5 digits.");
                 isValid = false;
             }
+
+            //City Validation
+            if (cityVal === "") {
+                showError(city, "City is required.");
+                isValid = false;
+            }
+
+            //Address Validation
+            if (addressVal === "") {
+                showError(address, "Address is required.");
+                isValid = false;
+            }
+
+            //insurance validation
+            if (insuranceVal === "") {
+                showError(insurance, "Insurance provider is required.");
+                isValid = false;
+            }
+
+
 
             // Block form submission if invalid
             if (!isValid) {
@@ -258,6 +304,8 @@
             } else if (isNaN(idVal)) {
                 showError(id, "Patient ID must be a number.");
                 isValid = false;
+            
+
         }
 
         if (!isValid) {
@@ -280,5 +328,6 @@
         </script>
 </body>
 </html>
+
 
 
