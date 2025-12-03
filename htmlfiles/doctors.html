@@ -150,6 +150,8 @@
         const licenseNum = document.getElementById("license_number");
         const phone = document.getElementById("phone_number");
         const email = document.getElementById("email");
+        const department = document.getElementById("department");
+        const office = document.getElementById("office_number");
 
         const first = firstName.value.trim();
         const last = lastName.value.trim();
@@ -157,6 +159,8 @@
         const license = licenseNum.value.trim();
         const phoneVal = phone.value.trim();
         const emailVal = email.value.trim();
+        const departmentVal = department.value.trim();
+        const officeVal = office.value.trim();
         
         //Does not allow error messages to stack
         document.querySelectorAll(".error").forEach(err => err.remove());
@@ -193,6 +197,11 @@
         }
         
         //Phone number validation
+        if (phoneVal == "") {
+            showError (phone, "Phone is required");
+            isValid = false;
+        }
+
         const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
          if (phoneVal !== "" && !phonePattern.test(phoneVal)) {
             showError (phone, "Phone must be in format 123-456-7890");
@@ -200,10 +209,34 @@
         }
         
         //Email must end in @medportal.com
+        if (emailVal == "") {
+            showError (email, "Email is required");
+            isValid = false;
+        }
+
         if (emailVal !== "" && !emailVal.endsWith("@medportal.com")) {
             showError(email, "Email must end with @medportal.com.");
             isValid = false;
         }
+
+        //Deperatment Validation
+        if (departmentVal == "") {
+            showError (department, "Department is required");
+            isValid = false;
+        }
+
+        //Office Number Validation
+        if (officeVal == "") {
+            showError (office, "Office number is required");
+            isValid = false;
+        }
+
+        const officePattern = /^Room \d{1,4}$/;
+         if (officeVal !== "" && !officePattern.test(officeVal)) {
+            showError (office, "Office number must be in format Room ###");
+            isValid = false;
+        }
+
 
         // Block form submission if invalid
         if (!isValid) {
