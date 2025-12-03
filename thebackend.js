@@ -117,6 +117,16 @@ app.get('/dashboard', function(req, res) {
     }
 });
 
+
+app.get('/ranking', function(req, res) {
+    // if the user is not logged in, redirect to login page
+    if(req.session.loggedIn !== true) {
+        readAndServe("./htmlfiles/login.html", res)
+    } else {
+        readAndServe("./htmlfiles/ranking.html", res)
+    }
+});
+
 app.get('/search', function(req, res) {
     // if the user is not logged in, redirect to login page
     if(req.session.loggedIn !== true) {
